@@ -30,6 +30,16 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="requirements.txt" />
+    <Content Include="static\style.css" />
+    <Content Include="templates\menu.html" />
+    <Content Include="templates\Items.html" />
+    <Content Include="templates\Orders.html" />
+    <Content Include="templates\Customers.html" />
+    <Content Include="templates\Employees.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="static\" />
+    <Folder Include="templates\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.Web.targets" />
   <!-- Specify pre- and post-build commands in the BeforeBuild and 
