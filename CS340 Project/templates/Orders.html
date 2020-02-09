@@ -2,8 +2,93 @@
 {% block content %}
 <div class="Items">
     <h1>Order managment page</h1>
-    <button type="button"> Add Order</button>
     <button type="button"> Edit Order</button>
     <button type="button"> Delete Order</button>
 </div>
+<form>
+    <div class="form-row">
+        <div class="col-md-3 mb-3">
+            <label for="validationDefault01">Order id</label>
+            <input type="number" class="form-control" id="validationDefault01" value="123456" required>
+        </div>
+        <div class="col-md-3 mb-3">
+            <label for="validationDefault02">Cusomter id</label>
+            <input type="number" class="form-control" id="validationDefault02" value="123456" required>
+        </div>
+        <div class="col-md-3 mb-3">
+            <label for="validationDefault01">Employee id</label>
+            <input type="number" class="form-control" id="validationDefault01" value="123456" required>
+        </div>
+        <div class="col-md-3 mb-3">
+            <label for="validationDefault01">Date</label>
+            <input type="number" class="form-control" id="validationDefault01" value="123456" required>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="col-md-3 mb-3">
+            <label for="validationDefault03">Total</label>
+            <input type="number" class="form-control" id="validationDefault03" required>
+        </div>
+        <div class="col-md-3 mb-3">
+            <label for="validationDefault04">Credit card number</label>
+            <input type="number" class="form-control" id="validationDefault04" required>
+        </div>
+        <div class="col-md-3 mb-3">
+            <label for="validationDefault04">Expiration date</label>
+            <input type="date" class="form-control" id="validationDefault04" required>
+        </div>
+        <div class="col-md-3 mb-3">
+            <label for="validationDefault04">Credit card code</label>
+            <input type="number" class="form-control" id="validationDefault04" required>
+        </div>
+    </div>
+    <button class="btn btn-primary" type="submit">Add order</button>
+</form>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th scope="col">&nbsp;&nbsp;&nbsp;Order id</th>
+            <th scope="col">Customer id</th>
+            <th scope="col">Employee id</th>
+            <th scope="col">Date</th>
+            <th scope="col">Total</th>
+            <th scope="col">Credit card number</th>
+            <th scope="col">Expiration date</th>
+            <th scope="col">Credit card code</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th scope="row"><input type="checkbox" aria-label="textbox for row">  123456</th>
+            <td>123456</td>
+            <td>123</td>
+            <td>2020-02-09</td>
+            <td>120.98</td>
+            <td>123456789999</td>
+            <td>2022-02-01</td>
+            <td>123</td>
+        </tr>
+        <tr>
+            <th scope="row"><input type="checkbox" aria-label="textbox for row">  123457</th>
+            <td>123457</td>
+            <td>124</td>
+            <td>2020-02-10</td>
+            <td>129.98</td>
+            <td>111156789999</td>
+            <td>2022-03-01</td>
+            <td>124</td>
+        </tr>
+        <tr>
+            <th scope="row"><input type="checkbox" aria-label="textbox for row">  123458</th>
+            <td>123458</td>
+            <td>125</td>
+            <td>2020-02-11</td>
+            <td>130.98</td>
+            <td>222256789999</td>
+            <td>2022-04-01</td>
+            <td>125</td>
+        </tr>
+    </tbody>
+</table>
+
 {% endblock %}

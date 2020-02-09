@@ -2,8 +2,51 @@
 {% block content %}
 <div class="Items">
     <h1>Employee managment page</h1>
-    <button type="button"> Add Employee</button>
     <button type="button"> Edit Employee</button>
     <button type="button"> Delete Employee</button>
 </div>
+<form>
+    <div class="form-row">
+        <div class="col-md-4 mb-3">
+            <label for="validationDefault01">Employee id</label>
+            <input type="number" class="form-control" id="validationDefault01" value="123456" required>
+        </div>
+        <div class="col-md-4 mb-3">
+            <label for="validationDefault01">First name</label>
+            <input type="text" class="form-control" id="validationDefault01" value="Mark" required>
+        </div>
+        <div class="col-md-4 mb-3">
+            <label for="validationDefault02">Last name</label>
+            <input type="text" class="form-control" id="validationDefault02" value="Otto" required>
+        </div>
+    </div>
+    <button class="btn btn-primary" type="submit">Add employee</button>
+</form>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th scope="col">&nbsp;&nbsp;&nbsp;Employee id</th>
+            <th scope="col">First</th>
+            <th scope="col">Last</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th scope="row"><input type="checkbox" aria-label="textbox for row">  1</th>
+            <td>Mark</td>
+            <td>Otto</td>
+        </tr>
+        <tr>
+            <th scope="row"><input type="checkbox" aria-label="textbox for row">  2</th>
+            <td>Jacob</td>
+            <td>Thornton</td>
+        </tr>
+        <tr>
+            <th scope="row"><input type="checkbox" aria-label="textbox for row">  3</th>
+            <td>Larry</td>
+            <td>Bird</td>
+        </tr>
+    </tbody>
+</table>
+
 {% endblock %}

@@ -2,8 +2,70 @@
 {% block content %}
 <div class="Items">
     <h1>Items managment page</h1>
-    <button type="button"> Add Item</button>
     <button type="button"> Edit Item</button>
     <button type="button"> Delete Item</button>
 </div>
+<form>
+    <div class="form-row">
+        <div class="col-md-3 mb-3">
+            <label for="validationDefault01">Item id</label>
+            <input type="number" class="form-control" id="validationDefault01" value="123456" required>
+        </div>
+        <div class="col-md-3 mb-3">
+            <label for="validationDefault03">Item name</label>
+            <input type="text" class="form-control" id="validationDefault03" value="Monopoly" required>
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <label for="validationDefault02">Price</label>
+            <input type="number" class="form-control" id="validationDefault02" value="19.99" required>
+        </div>
+        <div class="col-md-3 mb-3">
+            <label for="validationDefault03">Quantity available</label>
+            <input type="number" class="form-control" id="validationDefault03" required>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="col-md-12 mb-3">
+            <label for="validationDefault04">Description</label>
+            <input type="text" class="form-control" id="validationDefault04" required>
+        </div>
+    </div>
+    <button class="btn btn-primary" type="submit">Add item</button>
+</form>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th scope="col">&nbsp;&nbsp;&nbsp;Item id</th>
+            <th scope="col">Name</th>
+            <th scope="col">Price</th>
+            <th scope="col">Quantity available</th>
+            <th scope="col">Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th scope="row"><input type="checkbox" aria-label="textbox for row">  1</th>
+            <td>Risk</td>
+            <td>29.99</td>
+            <td>15</td>
+            <td>This is a game where you attempt to dominate the world.</td>
+        </tr>
+        <tr>
+            <th scope="row"><input type="checkbox" aria-label="textbox for row">  2</th>
+            <td>Scrabble</td>
+            <td>25.99</td>
+            <td>21</td>
+            <td>Use your mastery of the English language to score points.</td>
+        </tr>
+        <tr>
+            <th scope="row"><input type="checkbox" aria-label="textbox for row">  3</th>
+            <td>Ticket to Ride Europe</td>
+            <td>59.99</td>
+            <td>11</td>
+            <td>Expand your empire of railways to while connecting major cities of Europe.</td>
+        </tr>
+    </tbody>
+</table>
+
 {% endblock %}
