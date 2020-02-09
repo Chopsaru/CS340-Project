@@ -31,6 +31,7 @@
   <ItemGroup>
     <Content Include="requirements.txt" />
     <Content Include="static\style.css" />
+    <Content Include="templates\index.html" />
     <Content Include="templates\menu.html" />
     <Content Include="templates\Items.html" />
     <Content Include="templates\Orders.html" />

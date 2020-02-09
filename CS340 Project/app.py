@@ -5,15 +5,15 @@ It contains the definition of routes and views for the application.
 
 from flask import Flask
 from flask import render_template as render
+from flask_bootstrap import Bootstrap
 app = Flask(__name__)
 
 # Make the WSGI interface available at the top level so wfastcgi can get it.
 wsgi_app = app.wsgi_app
 
-
 @app.route('/')
 def index():
-    return render("menu.html")
+    return render("index.html")
 
 @app.route('/Items')
 def Items():
