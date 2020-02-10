@@ -1,9 +1,7 @@
 ﻿{% extends "menu.html" %}
 {% block content %}
-<div class="Items">
-    <h1>Items managment page</h1>
-    <button type="button"> Edit Item</button>
-    <button type="button"> Delete Item</button>
+<div class="items">
+    <h1>Item Management Page</h1>
 </div>
 <form>
     <div class="form-row">
@@ -22,16 +20,18 @@
         </div>
         <div class="col-md-3 mb-3">
             <label for="validationDefault03">Quantity available</label>
-            <input type="number" class="form-control" id="validationDefault03" required>
+            <input type="number" class="form-control" id="validationDefault03" value="10" required>
         </div>
     </div>
     <div class="form-row">
         <div class="col-md-12 mb-3">
             <label for="validationDefault04">Description</label>
-            <input type="text" class="form-control" id="validationDefault04" required>
+            <input type="text" class="form-control" id="validationDefault04" value="This is a game where you accumulate properties until you have total dominance." required>
         </div>
     </div>
-    <button class="btn btn-primary" type="submit">Add item</button>
+    <button class="btn btn-success" type="submit">Add item</button>
+    <button class="btn btn-primary" type="submit">Edit item</button>
+    <button class="btn btn-danger" type="submit">Delete item</button>
 </form>
 <table class="table table-bordered">
     <thead>
@@ -45,21 +45,21 @@
     </thead>
     <tbody>
         <tr>
-            <th scope="row"><input type="checkbox" aria-label="textbox for row">  1</th>
+            <th scope="row"><input type="checkbox" aria-label="textbox for row">  100001</th>
             <td>Risk</td>
             <td>29.99</td>
             <td>15</td>
             <td>This is a game where you attempt to dominate the world.</td>
         </tr>
         <tr>
-            <th scope="row"><input type="checkbox" aria-label="textbox for row">  2</th>
+            <th scope="row"><input type="checkbox" aria-label="textbox for row">  100002</th>
             <td>Scrabble</td>
             <td>25.99</td>
             <td>21</td>
             <td>Use your mastery of the English language to score points.</td>
         </tr>
         <tr>
-            <th scope="row"><input type="checkbox" aria-label="textbox for row">  3</th>
+            <th scope="row"><input type="checkbox" aria-label="textbox for row">  100003</th>
             <td>Ticket to Ride Europe</td>
             <td>59.99</td>
             <td>11</td>

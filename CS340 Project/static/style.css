@@ -7,10 +7,11 @@ body {
 
 header {
     background-color: #69B4B1;
-    height: 40px;
+    height: 60px;
     width: 100%;
     opacity: .9;
     margin-bottom: 10px;
+    padding: 10px 0px 10px 0px;
 }
 
     header h1.logo {
@@ -34,7 +35,7 @@ div.index {
 div.items {
     padding: 10px 0 30px 0;
     text-align: center;
-    background-color: #C0FFFC;
+    background-color: #ddfad2;
     -webkit-border-radius: 6px;
     -moz-border-radius: 6px;
     border-radius: 6px;
@@ -42,23 +43,26 @@ div.items {
 
 div.orders {
     padding: 10px 0 30px 0;
-    background-color: #C0FFFC;
+    text-align: center;
+    background-color: #fffdc7;
     -webkit-border-radius: 6px;
     -moz-border-radius: 6px;
     border-radius: 6px;
 }
 
-div.Customers {
+div.customers {
     padding: 10px 0 30px 0;
-    background-color: #C0FFFC;
+    text-align: center;
+    background-color: #fed4ff;
     -webkit-border-radius: 6px;
     -moz-border-radius: 6px;
     border-radius: 6px;
 }
 
-div.Employees {
+div.employees {
     padding: 10px 0 30px 0;
-    background-color: #C0FFFC;
+    text-align: center;
+    background-color: #c0d8f0;
     -webkit-border-radius: 6px;
     -moz-border-radius: 6px;
     border-radius: 6px;

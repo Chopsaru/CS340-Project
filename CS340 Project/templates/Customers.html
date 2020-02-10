@@ -1,28 +1,24 @@
 ﻿{% extends "menu.html" %}
 {% block content %}
-<div class="Items">
-    <h1>Customers managment page</h1>
-    <button type="button"> Edit Customer</button>
-    <button type="button"> Delete Customer</button>
+<div class="customers">
+    <h1>Customer Management Page</h1>
 </div>
 <form>
     <div class="form-row">
-        <div class="col-md-2 mb-3">
+        <div class="col-md-4 mb-3">
+            <label for="validationDefault01">Customer id</label>
+            <input type="text" class="form-control" id="validationDefault01" value="123456" required>
         </div>
         <div class="col-md-4 mb-3">
-            <label for="validationDefault01">First name</label>
-            <input type="text" class="form-control" id="validationDefault01" value="Mark" required>
+            <label for="validationDefault02">First name</label>
+            <input type="text" class="form-control" id="validationDefault02" value="Mark" required>
         </div>
         <div class="col-md-4 mb-3">
-            <label for="validationDefault02">Last name</label>
-            <input type="text" class="form-control" id="validationDefault02" value="Otto" required>
-        </div>
-        <div class="col-md-2 mb-3">
+            <label for="validationDefault03">Last name</label>
+            <input type="text" class="form-control" id="validationDefault03" value="Otto" required>
         </div>
     </div>
     <div class="form-row">
-        <div class="col-md-2 mb-3">
-        </div>
         <div class="col-md-4 mb-3">
             <label for="validationDefault03">Email</label>
             <input type="email" class="form-control" id="validationDefault03" required>
@@ -31,15 +27,17 @@
             <label for="validationDefault04">Phone number</label>
             <input type="tel" class="form-control" id="validationDefault04" required>
         </div>
-        <div class="col-md-2 mb-3">
+        <div class="col-md-4 mb-3">
         </div>
     </div>
-    <button class="btn btn-primary" type="submit">Add customer</button>
+    <button class="btn btn-success" type="submit">Add customer</button>
+    <button class="btn btn-primary" type="submit">Edit customer</button>
+    <button class="btn btn-danger" type="submit">Delete customer</button>
 </form>
 <table class="table table-bordered">
     <thead>
         <tr>
-            <th scope="col">&nbsp;&nbsp;&nbsp;#</th>
+            <th scope="col">&nbsp;&nbsp;&nbsp;Customer id</th>
             <th scope="col">First</th>
             <th scope="col">Last</th>
             <th scope="col">Email</th>
@@ -48,21 +46,21 @@
     </thead>
     <tbody>
         <tr>
-            <th scope="row"><input type="checkbox" aria-label="textbox for row">  1</th>
+            <th scope="row"><input type="checkbox" aria-label="textbox for row">  123456</th>
             <td>Mark</td>
             <td>Otto</td>
             <td>otto@gmail.com</td>
             <td>9998887777</td>
         </tr>
         <tr>
-            <th scope="row"><input type="checkbox" aria-label="textbox for row">  2</th>
+            <th scope="row"><input type="checkbox" aria-label="textbox for row">  123457</th>
             <td>Jacob</td>
             <td>Thornton</td>
             <td>thornton@gmail.com</td>
             <td>9998886666</td>
         </tr>
         <tr>
-            <th scope="row"><input type="checkbox" aria-label="textbox for row">  3</th>
+            <th scope="row"><input type="checkbox" aria-label="textbox for row">  123458</th>
             <td>Larry</td>
             <td>Bird</td>
             <td>bird@gmail.com</td>

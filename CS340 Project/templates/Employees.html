@@ -1,9 +1,7 @@
 ﻿{% extends "menu.html" %}
 {% block content %}
-<div class="Items">
-    <h1>Employee managment page</h1>
-    <button type="button"> Edit Employee</button>
-    <button type="button"> Delete Employee</button>
+<div class="employees">
+    <h1>Employee Management Page</h1>
 </div>
 <form>
     <div class="form-row">
@@ -20,7 +18,9 @@
             <input type="text" class="form-control" id="validationDefault02" value="Otto" required>
         </div>
     </div>
-    <button class="btn btn-primary" type="submit">Add employee</button>
+    <button class="btn btn-success" type="submit">Add employee</button>
+    <button class="btn btn-primary" type="submit">Edit employee</button>
+    <button class="btn btn-danger" type="submit">Delete employee</button>
 </form>
 <table class="table table-bordered">
     <thead>
@@ -32,17 +32,17 @@
     </thead>
     <tbody>
         <tr>
-            <th scope="row"><input type="checkbox" aria-label="textbox for row">  1</th>
+            <th scope="row"><input type="checkbox" aria-label="textbox for row">  123456</th>
             <td>Mark</td>
             <td>Otto</td>
         </tr>
         <tr>
-            <th scope="row"><input type="checkbox" aria-label="textbox for row">  2</th>
+            <th scope="row"><input type="checkbox" aria-label="textbox for row">  123457</th>
             <td>Jacob</td>
-            <td>Thornton</td>
+            <td>Thorntonanderson</td>
         </tr>
         <tr>
-            <th scope="row"><input type="checkbox" aria-label="textbox for row">  3</th>
+            <th scope="row"><input type="checkbox" aria-label="textbox for row">  123458</th>
             <td>Larry</td>
             <td>Bird</td>
         </tr>
