@@ -30,6 +30,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="requirements.txt" />
+    <Content Include="static\BGILogo.png" />
     <Content Include="static\style.css" />
     <Content Include="templates\index.html" />
     <Content Include="templates\menu.html" />

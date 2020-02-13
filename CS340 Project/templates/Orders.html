@@ -5,44 +5,49 @@
 </div>
 <form>
     <div class="form-row">
-        <div class="col-md-3 mb-3">
-            <label for="validationDefault01">Order id</label>
-            <input type="number" class="form-control" id="validationDefault01" value="123456" required>
+        <div class="col">
+            <label for="empSelect">Employee</label>
+            <select class="form-control" id="empSelect" required>
+                <option>Mark Otto</option>
+                <option>Jacob Thorntonanderson</option>
+                <option>Larry Bird</option>
+            </select>
         </div>
-        <div class="col-md-3 mb-3">
-            <label for="validationDefault02">Customer id</label>
-            <input type="number" class="form-control" id="validationDefault02" value="123456" required>
-        </div>
-        <div class="col-md-3 mb-3">
-            <label for="validationDefault01">Employee id</label>
-            <input type="number" class="form-control" id="validationDefault01" value="123456" required>
-        </div>
-        <div class="col-md-3 mb-3">
+        <div class="col">
             <label for="validationDefault01">Date</label>
-            <input type="date" class="form-control" id="validationDefault01" value="2020-02-10" required>
+            <input type="date" class="form-control" id="exampleFormControlSelect1" value="2020-02-10" required>
         </div>
     </div>
     <div class="form-row">
-        <div class="col-md-3 mb-3">
-            <label for="validationDefault03">Total</label>
-            <input type="number" class="form-control" id="validationDefault03" value="120.98" required>
-        </div>
-        <div class="col-md-3 mb-3">
+        <div class="col">
             <label for="validationDefault04">Credit card number</label>
             <input type="number" class="form-control" id="validationDefault04" value="1111222233334444" required>
         </div>
-        <div class="col-md-3 mb-3">
+        <div class="col">
             <label for="validationDefault04">Expiration date</label>
             <input type="date" class="form-control" id="validationDefault04" value="2023-03-01" required>
         </div>
-        <div class="col-md-3 mb-3">
+        <div class="col">
             <label for="validationDefault04">Credit card code</label>
             <input type="number" class="form-control" id="validationDefault04" value="123" required>
         </div>
     </div>
+    <div class="form-row">
+        <div class="col">
+            <label for="input-group">Items</label>
+            <div class="input-group">
+                <select class="form-control" id="itemSelect">
+                    <option>Risk, 29.99</option>
+                    <option>Scrabble, 25.99</option>
+                    <option>ticket to Ride Europe, 59.99</option>
+                </select>
+                <input type="number" class="form-control">
+            </div>
+        </div>
+    </div>
+    <br>
     <button class="btn btn-success" type="submit">Add order</button>
-    <button class="btn btn-primary" type="submit">Edit order</button>
-    <button class="btn btn-danger" type="submit">Delete order</button>
+
 </form>
 <table class="table table-bordered">
     <thead>
@@ -55,6 +60,7 @@
             <th scope="col">Credit card number</th>
             <th scope="col">Expiration date</th>
             <th scope="col">Credit card code</th>
+            <th scope="col"></th>
         </tr>
     </thead>
     <tbody>
@@ -67,6 +73,7 @@
             <td>1111222233334444</td>
             <td>2022-02-01</td>
             <td>123</td>
+            <td class="rowBtn"><button class="btn btn-primary" type="submit">Edit</button></td>
         </tr>
         <tr>
             <th scope="row"><input type="checkbox" aria-label="textbox for row">  123457</th>
@@ -77,6 +84,7 @@
             <td>1111222233334445</td>
             <td>2022-03-01</td>
             <td>124</td>
+            <td class="rowBtn"><button class="btn btn-primary" type="submit">Edit</button></td>
         </tr>
         <tr>
             <th scope="row"><input type="checkbox" aria-label="textbox for row">  123458</th>
@@ -87,8 +95,11 @@
             <td>1111222233334446</td>
             <td>2022-04-01</td>
             <td>125</td>
+            <td class="rowBtn"><button class="btn btn-primary" type="submit">Edit</button></td>
         </tr>
     </tbody>
 </table>
+
+<td><button class="btn btn-danger" type="submit">Delete selected</button></td>
 
 {% endblock %}

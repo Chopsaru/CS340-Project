@@ -5,22 +5,17 @@
 </div>
 <form>
     <div class="form-row">
-        <div class="col-md-4 mb-3">
-            <label for="validationDefault01">Employee id</label>
-            <input type="number" class="form-control" id="validationDefault01" value="123456" required>
-        </div>
-        <div class="col-md-4 mb-3">
+        <div class="col mb-3">
             <label for="validationDefault01">First name</label>
             <input type="text" class="form-control" id="validationDefault01" value="Mark" required>
         </div>
-        <div class="col-md-4 mb-3">
+        <div class="col mb-3">
             <label for="validationDefault02">Last name</label>
             <input type="text" class="form-control" id="validationDefault02" value="Otto" required>
         </div>
     </div>
     <button class="btn btn-success" type="submit">Add employee</button>
-    <button class="btn btn-primary" type="submit">Edit employee</button>
-    <button class="btn btn-danger" type="submit">Delete employee</button>
+
 </form>
 <table class="table table-bordered">
     <thead>
@@ -28,6 +23,7 @@
             <th scope="col">&nbsp;&nbsp;&nbsp;Employee id</th>
             <th scope="col">First</th>
             <th scope="col">Last</th>
+            <th scope="col"></th>
         </tr>
     </thead>
     <tbody>
@@ -35,18 +31,23 @@
             <th scope="row"><input type="checkbox" aria-label="textbox for row">  123456</th>
             <td>Mark</td>
             <td>Otto</td>
+            <td class="rowBtn"><button class="btn btn-primary" type="submit">Edit</button></td>
         </tr>
         <tr>
             <th scope="row"><input type="checkbox" aria-label="textbox for row">  123457</th>
             <td>Jacob</td>
             <td>Thorntonanderson</td>
+            <td class="rowBtn"><button class="btn btn-primary" type="submit">Edit</button></td>
         </tr>
         <tr>
             <th scope="row"><input type="checkbox" aria-label="textbox for row">  123458</th>
             <td>Larry</td>
             <td>Bird</td>
+            <td class="rowBtn"><button class="btn btn-primary" type="submit">Edit</button></td>
         </tr>
     </tbody>
 </table>
+
+<td><button class="btn btn-danger" type="submit">Delete selected</button></td>
 
 {% endblock %}
