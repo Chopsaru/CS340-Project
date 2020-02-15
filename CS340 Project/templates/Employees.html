@@ -1,5 +1,10 @@
 ﻿{% extends "menu.html" %}
 {% block content %}
+<script>
+$(document).ready(function() {
+    $('#empTable').DataTable();
+} );
+    </script>
 <div class="employees">
     <h1>Employee Management Page</h1>
 </div>
@@ -17,7 +22,7 @@
     <button class="btn btn-success" type="submit">Add employee</button>
 
 </form>
-<table class="table table-bordered">
+<table id="empTable" class="table table-bordered">
     <thead>
         <tr>
             <th scope="col">&nbsp;&nbsp;&nbsp;Employee id</th>
@@ -29,20 +34,20 @@
     <tbody>
         <tr>
             <th scope="row"><input type="checkbox" aria-label="textbox for row">  123456</th>
-            <td>Mark</td>
-            <td>Otto</td>
+            <td>Aaron</td>
+            <td>Aaronson</td>
             <td class="rowBtn"><button class="btn btn-primary" type="submit">Edit</button></td>
         </tr>
         <tr>
             <th scope="row"><input type="checkbox" aria-label="textbox for row">  123457</th>
-            <td>Jacob</td>
-            <td>Thorntonanderson</td>
+            <td>Nester </td>
+            <td>Coin</td>
             <td class="rowBtn"><button class="btn btn-primary" type="submit">Edit</button></td>
         </tr>
         <tr>
             <th scope="row"><input type="checkbox" aria-label="textbox for row">  123458</th>
-            <td>Larry</td>
-            <td>Bird</td>
+            <td>Della</td>
+            <td>Narn</td>
             <td class="rowBtn"><button class="btn btn-primary" type="submit">Edit</button></td>
         </tr>
     </tbody>
