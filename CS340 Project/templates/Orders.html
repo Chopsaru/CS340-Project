@@ -12,56 +12,66 @@ $(document).ready(function() {
 <form id="orderForm">
     <div class="form-row">
         <div class="col">
-            <label for="empSelect">Employee</label>
-            <select class="form-control" id="empSelect" required>
+            <label for="custSelect">Customer</label>
+            <select class="form-control" id="custSelect" required>
                 <option>Mark Otto</option>
                 <option>Jacob Thorntonanderson</option>
                 <option>Larry Bird</option>
             </select>
         </div>
         <div class="col">
-            <label for="validationDefault01">Date</label>
-            <input type="date" class="form-control" id="exampleFormControlSelect1" value="2020-02-10" required>
+            <label for="empSelect">Employee</label>
+            <select class="form-control" id="empSelect" required>
+                <option>Fred Rodriguez</option>
+                <option>Susie Anderson</option>
+                <option>Larissa Obermueller</option>
+            </select>
+        </div>
+        <div class="col">
+            <label for="dateInput">Date</label>
+            <input type="date" class="form-control" id="dateInput" value="2020-02-10" required>
         </div>
     </div>
     <div class="form-row">
         <div class="col">
-            <label for="validationDefault04">Credit card number</label>
-            <input type="number" class="form-control" id="validationDefault04" value="1111222233334444" required>
+            <label for="creditCardNum">Credit card number</label>
+            <input type="number" class="form-control" id="creditCardNum" value="1111222233334444" required>
         </div>
         <div class="col">
-            <label for="validationDefault04">Expiration date</label>
-            <input type="date" class="form-control" id="validationDefault04" value="2023-03-01" required>
+            <label for="expDateInput">Expiration date</label>
+            <input type="date" class="form-control" id="expDateInput" value="2023-03-01" required>
         </div>
         <div class="col">
-            <label for="validationDefault04">Credit card code</label>
-            <input type="number" class="form-control" id="validationDefault04" value="123" required>
+            <label for="creditCardCode">Credit card code</label>
+            <input type="number" class="form-control" id="creditCardCode" value="123" required>
         </div>
     </div>
     <div class="form-row">
-        <div class="col">
-            <label for="input-group">Items</label>
-            <div class="input-group">
+        <div class="input-group">
+            <div class="col-md-10">
+                <label for="itemSelect">Items</label>
                 <select class="form-control" id="itemSelect">
+                    <option>Select item</option>
                     <option>Risk, 29.99</option>
                     <option>Scrabble, 25.99</option>
                     <option>ticket to Ride Europe, 59.99</option>
                 </select>
-                <input type="number" class="form-control">
+            </div>
+            <div class="col-md-2">
+                <label for="quantityInput">Quantity</label>
+                <input type="number" class="form-control" id="quantityInput">
             </div>
         </div>
     </div>
-    </form>
-    <button id="addItemBtn">Additional Item</button>
-    <br><br>
-    <button class="btn btn-success" type="submit" form="orderForm">Add order</button>
-
-
+</form>
+<button class="btn btn-secondary mb-3" id="addItemBtn" type="submit" form="orderForm">Add item to order</button>
+<br>
+<button class="btn btn-success mb-3" type="submit" form="orderForm">Submit order</button>
 
 <table id="ordersTable" class="table table-bordered">
     <thead>
         <tr>
-            <th>&nbsp;&nbsp;&nbsp;Order id</th>
+            <th>Order id</th>
             <th>Customer</th>
             <th>Employee</th>
             <th>Date</th>
@@ -73,7 +83,12 @@ $(document).ready(function() {
     </thead>
     <tbody>
         <tr>
-            <th><input type="checkbox">123456</th>
+            <th>
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="customCheck1">
+                    <label class="custom-control-label" for="customCheck1">123456</label>
+                </div>
+            </th>
             <td>Mark Otto</td>
             <td>Aaron Aaronson</td>
             <td>2020-02-09</td>
@@ -87,7 +102,12 @@ $(document).ready(function() {
             <td colspan="3"><p>Risk, 29.99</p></td>
         </tr>
         <tr>
-            <th><input type="checkbox">123457</th>
+            <th>
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="customCheck2">
+                    <label class="custom-control-label" for="customCheck2">123457</label>
+                </div>
+            </th>
             <td>Jacob Thornton</td>
             <td>Nester Coin</td>
             <td>2020-02-10</td>
@@ -101,7 +121,11 @@ $(document).ready(function() {
             <td colspan="3"><p>Risk, 29.99 <br /> Scrabble, 25.99</p></td>
         </tr>
         <tr>
-            <th><input type="checkbox">123458</th>
+            <th><div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="customCheck3">
+                    <label class="custom-control-label" for="customCheck3">123458</label>
+                </div>
+            </th>
             <td>Larry Bird</td>
             <td>Della Narn</td>
             <td>2020-02-11</td>
@@ -119,9 +143,7 @@ $(document).ready(function() {
         </tr>
     </tbody>
 </table>
-
-<td><button class="btn btn-danger" type="submit">Delete selected</button></td>
-
+<button class="btn btn-danger mt-3" type="submit">Delete selected</button>
 
 <script>
     var count = 1;
@@ -134,13 +156,16 @@ $(document).ready(function() {
 
     function addNewRow(count) {
         var newrow = '<div class="form-row">' +
-            '<div class="col">' +
             '<div class="input-group">' +
+            '<div class="col-md-10">' +
             '<select class="form-control" id="itemSelect">' +
+            '<option>Select item</option>' +
             '<option>Risk, 29.99</option>' +
             '<option>Scrabble, 25.99</option>' +
-            '<option>ticket to Ride Europe, 59.99</option>' +
+            '<option>Ticket to Ride Europe, 59.99</option>' +
             '</select>' +
+            '</div>' +
+            '<div class="col-md-2">' +
             '<input type="number" class="form-control">' +
             '</div>' +
             '</div>' +

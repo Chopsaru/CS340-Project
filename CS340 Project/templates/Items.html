@@ -35,7 +35,7 @@ $(document).ready(function() {
 <table id="itemTable" class="table table-bordered">
     <thead>
         <tr>
-            <th scope="col">&nbsp;&nbsp;&nbsp;Item id</th>
+            <th scope="col">Item id</th>
             <th scope="col">Name</th>
             <th scope="col">Price</th>
             <th scope="col">Quantity available</th>
@@ -45,7 +45,12 @@ $(document).ready(function() {
     </thead>
     <tbody>
         <tr>
-            <th scope="row"><input type="checkbox" aria-label="textbox for row">  100001</th>
+            <th>
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="customCheck1">
+                    <label class="custom-control-label" for="customCheck1">100001</label>
+                </div>
+            </th>
             <td>Risk</td>
             <td>29.99</td>
             <td>15</td>
@@ -53,7 +58,12 @@ $(document).ready(function() {
             <td class="rowBtn"><button class="btn btn-primary" type="submit">Edit</button></td>
         </tr>
         <tr>
-            <th scope="row"><input type="checkbox" aria-label="textbox for row">  100002</th>
+            <th>
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="customCheck2">
+                    <label class="custom-control-label" for="customCheck2">100002</label>
+                </div>
+            </th>
             <td>Scrabble</td>
             <td>25.99</td>
             <td>21</td>
@@ -61,16 +71,21 @@ $(document).ready(function() {
             <td class="rowBtn"><button class="btn btn-primary" type="submit">Edit</button></td>
         </tr>
         <tr>
-            <th scope="row"><input type="checkbox" aria-label="textbox for row">  100003</th>
+            <th>
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="customCheck3">
+                    <label class="custom-control-label" for="customCheck3">100003</label>
+                </div>
+            </th>
             <td>Ticket to Ride Europe</td>
             <td>59.99</td>
             <td>11</td>
-            <td>Expand your empire of railways to while connecting major cities of Europe.</td>
+            <td>Expand your empire of railways while connecting major cities of Europe.</td>
             <td class="rowBtn"><button class="btn btn-primary" type="submit">Edit</button></td>
         </tr>
     </tbody>
 </table>
 
-<td><button class="btn btn-danger" type="submit">Delete selected</button></td>
+<button class="btn btn-danger" type="submit">Delete selected</button>
 
 {% endblock %}

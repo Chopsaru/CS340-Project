@@ -35,7 +35,7 @@ $(document).ready(function() {
 <table id="custTable" class="table table-bordered table-sm">
     <thead>
         <tr>
-            <th class="th-sm" scope="col">&nbsp;&nbsp;&nbsp;Customer id</th>
+            <th class="th-sm" scope="col">Customer id</th>
             <th class="th-sm"scope="col">First</th>
             <th class="th-sm" scope="col">Last</th>
             <th class="th-sm" scope="col">Email</th>
@@ -45,7 +45,12 @@ $(document).ready(function() {
     </thead>
     <tbody>
         <tr>
-            <th scope="row"><input type="checkbox" aria-label="textbox for row">  123456</th>
+            <th>
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="customCheck1">
+                    <label class="custom-control-label" for="customCheck1">123456</label>
+                </div>
+            </th>
             <td>Mark</td>
             <td>Otto</td>
             <td>otto@gmail.com</td>
@@ -53,7 +58,12 @@ $(document).ready(function() {
             <td class="rowBtn"><button class="btn btn-primary" type="submit">Edit</button></td>
         </tr>
         <tr>
-            <th scope="row"><input type="checkbox" aria-label="textbox for row">  123457</th>
+            <th>
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="customCheck2">
+                    <label class="custom-control-label" for="customCheck2">123457</label>
+                </div>
+            </th>
             <td>Jacob</td>
             <td>Thornton</td>
             <td>thornton@gmail.com</td>
@@ -61,7 +71,12 @@ $(document).ready(function() {
             <td class="rowBtn"><button class="btn btn-primary" type="submit">Edit</button></td>
         </tr>
         <tr>
-            <th scope="row"><input type="checkbox" aria-label="textbox for row">  123458</th>
+            <th>
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="customCheck3">
+                    <label class="custom-control-label" for="customCheck3">123458</label>
+                </div>
+            </th>
             <td>Larry</td>
             <td>Bird</td>
             <td>bird@gmail.com</td>
@@ -71,5 +86,5 @@ $(document).ready(function() {
     </tbody>
 </table>
 
-<td><button class="btn btn-danger" type="submit">Delete selected</button></td>
+<button class="btn btn-danger" type="submit">Delete selected</button>
 {% endblock %}
