@@ -80,7 +80,8 @@ $(document).ready(function() {
             <th>Expiration date</th>
             <th>Credit card code</th>
             <th></th>
-    </thead>
+            <th></th>
+</thead>
     <tbody>
         <tr>
             <th>
@@ -96,10 +97,15 @@ $(document).ready(function() {
             <td>1111222233334444</td>
             <td>2022-02-01</td>
             <td>123</td>
+            <td><a href="#" id="show_1">Show Items</a></td>
             <td class="rowBtn"><button class="btn btn-primary" type="submit">Edit</button></td>
         </tr>
         <tr>
-            <td colspan="3"><p>Risk, 29.99</p></td>
+            <td colspan="5">
+                <div id="items_1" style="display: none;">
+                    <br>Risk, 29.99
+                </div>
+            </td>
         </tr>
         <tr>
             <th>
@@ -115,13 +121,20 @@ $(document).ready(function() {
             <td>1111222233334445</td>
             <td>2022-03-01</td>
             <td>124</td>
+            <td><a href="#" id="show_2">Show Items</a></td>
             <td class="rowBtn"><button class="btn btn-primary" type="submit">Edit</button></td>
         </tr>
         <tr>
-            <td colspan="3"><p>Risk, 29.99 <br /> Scrabble, 25.99</p></td>
+            <td colspan="5">
+                <div id="items_2" style="display: none;">
+                    <br>Risk, 29.99
+                    <br>Scrabble, 25.99
+                </div>
+            </td>
         </tr>
         <tr>
-            <th><div class="custom-control custom-checkbox">
+            <th>
+                <div class="custom-control custom-checkbox">
                     <input type="checkbox" class="custom-control-input" id="customCheck3">
                     <label class="custom-control-label" for="customCheck3">123458</label>
                 </div>
@@ -133,13 +146,17 @@ $(document).ready(function() {
             <td>1111222233334446</td>
             <td>2022-04-01</td>
             <td>125</td>
+            <td><a href="#" id="show_3">Show Items</a></td>
             <td class="rowBtn"><button class="btn btn-primary" type="submit">Edit</button></td>
         </tr>
         <tr>
-            <td colspan="3"><p>Ticket to Ride, 59.99 <br /> 
-                Ticket to Ride, 59.99 <br />
-                Ticket to Ride, 59.99</p></td>
-
+            <td colspan="5">
+                <div id="items_3" style="display: none;">
+                    <br>Ticket to Ride, 59.99 <br />
+                    Ticket to Ride, 59.99 <br />
+                    Ticket to Ride, 59.99
+                </div>
+            </td>
         </tr>
     </tbody>
 </table>
@@ -175,18 +192,9 @@ $(document).ready(function() {
 </script>
 
 <script>
-    $(function() {
-        $("td[colspan=3]").find("p").hide();
-        $("#ordersTable").click(function(event) {
-        event.stopPropagation();
-        var $target = $(event.target);
-        if ( $target.closest("td").attr("colspan") > 1 ) {
-            $target.slideUp();
-        }
-        else {
-            $target.closest("tr").next().find("p").slideToggle();
-        }                    
-    });
-});
+    $("a[id^=show_]").click(function(event) {
+        $("#items_" + $(this).attr('id').substr(5)).slideToggle("slow");
+        event.preventDefault();
+    })
 </script>
 {% endblock %}
