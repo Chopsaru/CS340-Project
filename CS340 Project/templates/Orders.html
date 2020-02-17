@@ -5,10 +5,11 @@ $(document).ready(function() {
     $('#ordersTable').DataTable();
 } );
 </script>
+
 <div class="orders">
     <h1>Order Management Page</h1>
 </div>
-<form>
+<form id="orderForm">
     <div class="form-row">
         <div class="col">
             <label for="empSelect">Employee</label>
@@ -50,10 +51,13 @@ $(document).ready(function() {
             </div>
         </div>
     </div>
-    <br>
-    <button class="btn btn-success" type="submit">Add order</button>
+    </form>
+    <button id="addItemBtn">Additional Item</button>
+    <br><br>
+    <button class="btn btn-success" type="submit" form="orderForm">Add order</button>
 
-</form>
+
+
 <table id="ordersTable" class="table table-bordered">
     <thead>
         <tr>
@@ -107,4 +111,29 @@ $(document).ready(function() {
 
 <td><button class="btn btn-danger" type="submit">Delete selected</button></td>
 
+
+<script>
+    var count = 1;
+    $("#addItemBtn").click(function (event) {
+        event.preventDefault();
+
+        $("#orderForm").append(addNewRow(count));
+        count++;
+    });
+
+    function addNewRow(count) {
+        var newrow = '<div class="form-row">' +
+            '<div class="col">' +
+            '<div class="input-group">' +
+            '<select class="form-control" id="itemSelect">' +
+            '<option>Risk, 29.99</option>' +
+            '<option>Scrabble, 25.99</option>' +
+            '<option>ticket to Ride Europe, 59.99</option>' +
+            '</select>' +
+            '<input type="number" class="form-control">' +
+            '</div>' +
+            '</div>' +
+            '</div>';
+        return newrow;
+    }</script>
 {% endblock %}
