@@ -39,8 +39,9 @@ CREATE TABLE `Customers` (
 LOCK TABLES `Customers` WRITE;
 /*!40000 ALTER TABLE `Customers` DISABLE KEYS */;
 INSERT INTO `Customers` VALUES 
-  (123456,'kingoftown@strongbadia.com', 'King', 'Oftown', 5555554321),
-  (123457,'noetzelg@oregonstate.edu', 'Greg', 'Noetzel', 6156238909);
+  (000001, 'kingoftown@strongbadia.com', 'King', 'Oftown', 5555554321),
+  (000002, 'noetzelg@oregonstate.edu', 'Greg', 'Noetzel', 6156238909),
+  (000003, 'gwashington@gmail.com', 'George', 'Washington', 5555554322);
 /*!40000 ALTER TABLE `Customers` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -69,9 +70,12 @@ CREATE TABLE `Order_Items` (
 LOCK TABLES `Order_Items` WRITE;
 /*!40000 ALTER TABLE `Order_Items` DISABLE KEYS */;
 INSERT INTO `Order_Items` VALUES 
-  (123456, 100001, 1),
-  (123459, 100001, 1),
-  (123459, 131415, 1);
+  (000001, 000001, 1),
+  (000001, 000002, 1),
+  (000001, 000003, 1),
+  (000002, 000002, 4),
+  (000003, 000001, 2),
+  (000003, 000003, 2);
 /*!40000 ALTER TABLE `Order_Items` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -99,8 +103,9 @@ CREATE TABLE `Items` (
 LOCK TABLES `Items` WRITE;
 /*!40000 ALTER TABLE `Items` DISABLE KEYS */;
 INSERT INTO `Items` VALUES 
-  (100001, 29.99, 'Risk', 'This is a game where you attempt to dominate the world.', 15),
-  (131415, 25.99, 'Scrabble', 'Use your mastery of the English language to score points.',21);
+  (000001, 29.99, 'Risk', 'This is a game where you attempt to dominate the world.', 15),
+  (000002, 25.99, 'Scrabble', 'Use your mastery of the English language to score points.', 21),
+  (000003, 59.99, 'Ticket to Ride Europe', 'Expand your empire of railways while connecting major cities of Europe.', 11);
 /*!40000 ALTER TABLE `Items` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -126,8 +131,9 @@ CREATE TABLE `Employees` (
 LOCK TABLES `Employees` WRITE;
 /*!40000 ALTER TABLE `Employees` DISABLE KEYS */;
 INSERT INTO `Employees` VALUES 
-  (232345,'Louis','Adams'),
-  (223344,'Delilah', 'Heythere');
+  (000001, 'Louis','Adams'),
+  (000002, 'Delilah', 'Heythere'),
+  (000003, 'Thomas','Jefferson');
 /*!40000 ALTER TABLE `Employees` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -160,8 +166,9 @@ CREATE TABLE `Orders` (
 LOCK TABLES `Orders` WRITE;
 /*!40000 ALTER TABLE `Orders` DISABLE KEYS */;
 INSERT INTO `Orders` VALUES 
-  (123456, 123456, 232345, '2020-01-01', 29.99, 1111222233334444, '2022-02-01', 123),
-  (123459, 123456, 232345, '2020-02-01', 55.98, 1111222233334444, '2022-03-01', 124);
+  (000001, 000001, 000001, '2020-01-01', 115.97, 1111222233334444, '2022-02-01', 123),
+  (000002, 000002, 000002, '2020-02-01', 103.96, 1111222233334445, '2022-03-01', 124),
+  (000003, 000003, 000003, '2020-02-15', 179.96, 1111222233334446, '2022-03-15', 125);
 /*!40000 ALTER TABLE `Orders` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
