@@ -28,8 +28,13 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="app.py" />
+    <Compile Include="db_connector\db_connector.py" />
+    <Compile Include="db_connector\sample.py" />
+    <Compile Include="db_connector\__init__.py" />
+    <Compile Include="db_credentials.py" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="db_connector\templates\db_test.html" />
     <Content Include="requirements.txt" />
     <Content Include="static\BGILogo.png" />
     <Content Include="static\style.css" />
@@ -41,6 +46,8 @@
     <Content Include="templates\Employees.html" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="db_connector\" />
+    <Folder Include="db_connector\templates\" />
     <Folder Include="static\" />
     <Folder Include="templates\" />
   </ItemGroup>

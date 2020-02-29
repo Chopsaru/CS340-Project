@@ -55,6 +55,12 @@ WHERE Orders.order_id = :order_idINPUT_FROM_CLICK
 INNER JOIN Order_Items ON Orders.order_id = Order_Items.order_id
 INNER JOIN Items ON Order_Items.item_id = Items.item_id
 
+--OR 
+SELECT Orders.order_id, Items.item_name, Order_Items.quantity, Items.price * Order_Items.quantity AS item_total
+FROM Orders
+INNER JOIN Order_Items ON Orders.order_id = Order_Items.order_id
+INNER JOIN Items ON Order_Items.item_id = Items.item_id
+
 -- query for the total of an order
 SELECT Orders.total FROM Orders WHERE Orders.order_id = :order_idINPUT_FROM_CLICK
 

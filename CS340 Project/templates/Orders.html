@@ -14,17 +14,17 @@ $(document).ready(function() {
         <div class="col">
             <label for="custSelect">Customer</label>
             <select class="form-control" id="custSelect" required>
-                <option>Mark Otto</option>
-                <option>Jacob Thorntonanderson</option>
-                <option>Larry Bird</option>
+                {% for c in custDD %}
+                <option>{{c.0}}</option>
+                {% endfor %}
             </select>
         </div>
         <div class="col">
             <label for="empSelect">Employee</label>
             <select class="form-control" id="empSelect" required>
-                <option>Fred Rodriguez</option>
-                <option>Susie Anderson</option>
-                <option>Larissa Obermueller</option>
+                {% for e in empDD %}
+                <option>{{e.0}}</option>
+                {% endfor %}
             </select>
         </div>
         <div class="col">
@@ -52,9 +52,9 @@ $(document).ready(function() {
                 <label for="itemSelect">Items</label>
                 <select class="form-control" id="itemSelect">
                     <option>Select item</option>
-                    <option>Risk, 29.99</option>
-                    <option>Scrabble, 25.99</option>
-                    <option>ticket to Ride Europe, 59.99</option>
+                    {% for i in itemDD %}
+                    <option>{{i.0}}</option>
+                    {% endfor %}
                 </select>
             </div>
             <div class="col-md-2">
@@ -83,82 +83,116 @@ $(document).ready(function() {
             <th></th>
 </thead>
     <tbody>
+        {% for r in rows %}
         <tr>
             <th>
                 <div class="custom-control custom-checkbox">
                     <input type="checkbox" class="custom-control-input" id="customCheck1">
-                    <label class="custom-control-label" for="customCheck1">123456</label>
+                    <label class="custom-control-label" for="customCheck1">{{r.0}}</label>
                 </div>
             </th>
-            <td>Mark Otto</td>
-            <td>Aaron Aaronson</td>
-            <td>2020-02-09</td>
-            <td>29.99</td>
-            <td>1111222233334444</td>
-            <td>2022-02-01</td>
-            <td>123</td>
+            <td>{{r[1]}}</td>
+            <td>{{r[2]}}</td>
+            <td>{{r[3]}}</td>
+            <td>{{r[4]}}</td>
+            <td>{{r[5]}}</td>
+            <td>{{r[6]}}</td>
+            <td>{{r[7]}}</td>
             <td><a href="#" id="show_1">Show Items</a></td>
             <td class="rowBtn"><button class="btn btn-primary" type="submit">Edit</button></td>
         </tr>
-        <tr>
-            <td colspan="5">
-                <div id="items_1" style="display: none;">
-                    <br>Risk, 29.99
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <th>
-                <div class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input" id="customCheck2">
-                    <label class="custom-control-label" for="customCheck2">123457</label>
-                </div>
-            </th>
-            <td>Jacob Thornton</td>
-            <td>Nester Coin</td>
-            <td>2020-02-10</td>
-            <td>55.98</td>
-            <td>1111222233334445</td>
-            <td>2022-03-01</td>
-            <td>124</td>
-            <td><a href="#" id="show_2">Show Items</a></td>
-            <td class="rowBtn"><button class="btn btn-primary" type="submit">Edit</button></td>
-        </tr>
-        <tr>
-            <td colspan="5">
-                <div id="items_2" style="display: none;">
-                    <br>Risk, 29.99
-                    <br>Scrabble, 25.99
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <th>
-                <div class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input" id="customCheck3">
-                    <label class="custom-control-label" for="customCheck3">123458</label>
-                </div>
-            </th>
-            <td>Larry Bird</td>
-            <td>Della Narn</td>
-            <td>2020-02-11</td>
-            <td>179.97</td>
-            <td>1111222233334446</td>
-            <td>2022-04-01</td>
-            <td>125</td>
-            <td><a href="#" id="show_3">Show Items</a></td>
-            <td class="rowBtn"><button class="btn btn-primary" type="submit">Edit</button></td>
-        </tr>
-        <tr>
-            <td colspan="5">
-                <div id="items_3" style="display: none;">
-                    <br>Ticket to Ride, 59.99 <br />
-                    Ticket to Ride, 59.99 <br />
-                    Ticket to Ride, 59.99
-                </div>
-            </td>
-        </tr>
+        {% for items in itemRow %}
+            {% if r.0 == items.0 %}
+                <tr>
+                    <td colspan="5">
+                        <div id="items_1" style="display: none;">
+                            <br>{{items[1]}}, {{items[3]}} 
+                        </div>
+                    </td>
+                </tr>
+            {% endif %}
+        {% endfor %}
+        {% endfor %}
+
+        <!--
+    <tr>
+        <th>
+            <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" id="customCheck1">
+                <label class="custom-control-label" for="customCheck1">123456</label>
+            </div>
+        </th>
+        <td>Mark Otto</td>
+        <td>Aaron Aaronson</td>
+        <td>2020-02-09</td>
+        <td>29.99</td>
+        <td>1111222233334444</td>
+        <td>2022-02-01</td>
+        <td>123</td>
+        <td><a href="#" id="show_1">Show Items</a></td>
+        <td class="rowBtn"><button class="btn btn-primary" type="submit">Edit</button></td>
+    </tr>
+    <tr>
+        <td colspan="5">
+            <div id="items_1" style="display: none;">
+                <br>Risk, 29.99
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <th>
+            <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" id="customCheck2">
+                <label class="custom-control-label" for="customCheck2">123457</label>
+            </div>
+        </th>
+        <td>Jacob Thornton</td>
+        <td>Nester Coin</td>
+        <td>2020-02-10</td>
+        <td>55.98</td>
+        <td>1111222233334445</td>
+        <td>2022-03-01</td>
+        <td>124</td>
+        <td><a href="#" id="show_2">Show Items</a></td>
+        <td class="rowBtn"><button class="btn btn-primary" type="submit">Edit</button></td>
+    </tr>
+    <tr>
+        <td colspan="5">
+            <div id="items_2" style="display: none;">
+                <br>Risk, 29.99
+                <br>Scrabble, 25.99
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <th>
+            <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" id="customCheck3">
+                <label class="custom-control-label" for="customCheck3">123458</label>
+            </div>
+        </th>
+        <td>Larry Bird</td>
+        <td>Della Narn</td>
+        <td>2020-02-11</td>
+        <td>179.97</td>
+        <td>1111222233334446</td>
+        <td>2022-04-01</td>
+        <td>125</td>
+        <td><a href="#" id="show_3">Show Items</a></td>
+        <td class="rowBtn"><button class="btn btn-primary" type="submit">Edit</button></td>
+    </tr>
+    <tr>
+        <td colspan="5">
+            <div id="items_3" style="display: none;">
+                <br>Ticket to Ride, 59.99 <br />
+                Ticket to Ride, 59.99 <br />
+                Ticket to Ride, 59.99
+            </div>
+        </td>
+    </tr>
+    -->
     </tbody>
+
 </table>
 <button class="btn btn-danger mt-3" type="submit">Delete selected</button>
 
