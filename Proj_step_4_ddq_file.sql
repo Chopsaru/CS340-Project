@@ -24,10 +24,10 @@ DROP TABLE IF EXISTS `Customers`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `Customers` (
   `cust_id` int(6) NOT NULL AUTO_INCREMENT,
-  `email` varchar(255) NOT NULL,
+  `email` varchar(255),
   `first_name` varchar(255) NOT NULL,
   `last_name` varchar(255) NOT NULL,
-  `phone_number` int(10) NOT NULL,
+  `phone_number` int(10),
   PRIMARY KEY (`cust_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;

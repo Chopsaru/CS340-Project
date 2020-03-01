@@ -98,20 +98,22 @@ $(document).ready(function() {
             <td>{{r[5]}}</td>
             <td>{{r[6]}}</td>
             <td>{{r[7]}}</td>
-            <td><a href="#" id="show_1">Show Items</a></td>
+            <td><a href="#" id="show_{{r.0}}">Show Items</a></td>
             <td class="rowBtn"><button class="btn btn-primary" type="submit">Edit</button></td>
         </tr>
-        {% for items in itemRow %}
-            {% if r.0 == items.0 %}
-                <tr>
-                    <td colspan="5">
-                        <div id="items_1" style="display: none;">
-                            <br>{{items[1]}}, {{items[3]}} 
-                        </div>
-                    </td>
-                </tr>
-            {% endif %}
-        {% endfor %}
+        
+            <tr>
+                <td colspan="5">
+                    <div id="items_{{r.0}}" style="display: none;">
+                        {% for items in itemRow %}
+                        {% if r.0 == items.0 %}
+                        <br>{{items[2]}} &nbsp {{items[1]}}, {{items[3]}}
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+            </td>
+        </tr>
+
         {% endfor %}
 
         <!--
