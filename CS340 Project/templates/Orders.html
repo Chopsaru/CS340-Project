@@ -53,7 +53,7 @@ $(document).ready(function() {
                 <select class="form-control" id="itemSelect">
                     <option>Select item</option>
                     {% for i in itemDD %}
-                    <option>{{i.0}}</option>
+                    <option>{{i.0}}, {{i.1}}</option>
                     {% endfor %}
                 </select>
             </div>
@@ -213,9 +213,9 @@ $(document).ready(function() {
             '<div class="col-md-10">' +
             '<select class="form-control" id="itemSelect">' +
             '<option>Select item</option>' +
-            '<option>Risk, 29.99</option>' +
-            '<option>Scrabble, 25.99</option>' +
-            '<option>Ticket to Ride Europe, 59.99</option>' +
+            '{% for i in itemDD %}' +
+            '<option>{{i.0}}, {{i.1}}</option>' +
+            '{% endfor %}' +
             '</select>' +
             '</div>' +
             '<div class="col-md-2">' +
