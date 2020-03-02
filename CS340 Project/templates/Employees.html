@@ -8,15 +8,15 @@ $(document).ready(function() {
 <div class="employees">
     <h1>Employee Management</h1>
 </div>
-<form>
+<form id="add-employee" action="/Employees" method="POST">
     <div class="form-row">
         <div class="col mb-3">
             <label for="validationDefault01">First name</label>
-            <input type="text" class="form-control" id="validationDefault01" value="Mark" required>
+            <input type="text" name="first_name" class="form-control" id="validationDefault01" value="Mark" required>
         </div>
         <div class="col mb-3">
             <label for="validationDefault02">Last name</label>
-            <input type="text" class="form-control" id="validationDefault02" value="Otto" required>
+            <input type="text" name="last_name"class="form-control" id="validationDefault02" value="Otto" required>
         </div>
     </div>
     <button class="btn btn-success" type="submit">Add employee</button>

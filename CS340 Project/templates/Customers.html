@@ -8,25 +8,25 @@ $(document).ready(function() {
 <div class="customers">
     <h1>Customer Management</h1>
 </div>
-<form>
+<form id="add-customer" action="/Customers" method="POST">
     <div class="form-row">
         <div class="col mb-3">
             <label for="validationDefault02">First name</label>
-            <input type="text" class="form-control" id="validationDefault02" value="Mark" required>
+            <input type="text" name="first_name" class="form-control" id="validationDefault02" value="Mark" required>
         </div>
         <div class="col mb-3">
             <label for="validationDefault03">Last name</label>
-            <input type="text" class="form-control" id="validationDefault03" value="Otto" required>
+            <input type="text" name="last_name" class="form-control" id="validationDefault03" value="Otto" required>
         </div>
     </div>
     <div class="form-row">
         <div class="col mb-3">
             <label for="validationDefault03">Email</label>
-            <input type="email" class="form-control" id="validationDefault03" required>
+            <input type="email" name="email" class="form-control" id="validationDefault03" required>
         </div>
         <div class="col mb-3">
             <label for="validationDefault04">Phone number</label>
-            <input type="tel" class="form-control" id="validationDefault04" required>
+            <input type="tel" name="phone_number" class="form-control" id="validationDefault04" required>
         </div>
     </div>
     <button class="btn btn-success" type="submit">Add customer</button>
