@@ -64,16 +64,6 @@ SELECT Orders.order_id, Items.item_name, Order_Items.quantity, Items.price * Ord
 FROM Orders
 INNER JOIN Order_Items ON Orders.order_id = Order_Items.order_id
 INNER JOIN Items ON Order_Items.item_id = Items.item_id
-WHERE Orders.order_id = :order_idINPUT_FROM_CLICK
-
---OR 
-SELECT Orders.order_id, Items.item_name, Order_Items.quantity, Items.price * Order_Items.quantity AS item_total
-FROM Orders
-INNER JOIN Order_Items ON Orders.order_id = Order_Items.order_id
-INNER JOIN Items ON Order_Items.item_id = Items.item_id
-
--- query for the total of an order
-SELECT Orders.total FROM Orders WHERE Orders.order_id = :order_idINPUT_FROM_CLICK
 
 -- query for adding a new order
 INSERT INTO Orders (cust_id, emp_id, date, total, credit_card_num, exp_date, credit_card_code)
@@ -81,7 +71,10 @@ INSERT INTO Orders (cust_id, emp_id, date, total, credit_card_num, exp_date, cre
 
 -- query for adding order items
 INSERT INTO Order_Items (order_id, item_id, quantity)
-	VALUES (:order_idFROM_NEW_ORDER, :item_idINPUT_FROM_DROPDOWN, :quantityIn)
+	VALUES ((SELECT Orders.order_id FROM Orders ORDER BY Orders.order_id DESC LIMIT 1), :item_idINPUT_FROM_DROPDOWN, :quantityIn)
+
+-- query for getting the total of an order
+UPDATE Orders SET total = (SELECT SUM(Items.price * Order_Items.quantity) FROM Order_Items INNER JOIN Items ON Order_Items.item_id = Items.item_id WHERE Order_Items.order_id = (SELECT Orders.order_id FROM Orders ORDER BY Orders.order_id DESC LIMIT 1)) WHERE Orders.order_id = (SELECT Orders.order_id FROM Orders ORDER BY Orders.order_id DESC LIMIT 1)
 
 -- query for editing an order
 UPDATE Orders SET cust_id=:cust_idINPUT_FROM_DROPDOWN, emp_id=:emp_idINPUT_FROM_DROPDOWN, date=:dateIn, credit_card_num=:credit_card_numIn,

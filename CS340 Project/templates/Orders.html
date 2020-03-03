@@ -81,7 +81,8 @@ $(document).ready(function() {
             <th>Credit card code</th>
             <th></th>
             <th></th>
-</thead>
+        </tr>
+    </thead>
     <tbody>
         {% for r in rows %}
         <tr>
@@ -119,83 +120,6 @@ $(document).ready(function() {
 
         {% endfor %}
 
-        <!--
-    <tr>
-        <th>
-            <div class="custom-control custom-checkbox">
-                <input type="checkbox" class="custom-control-input" id="customCheck1">
-                <label class="custom-control-label" for="customCheck1">123456</label>
-            </div>
-        </th>
-        <td>Mark Otto</td>
-        <td>Aaron Aaronson</td>
-        <td>2020-02-09</td>
-        <td>29.99</td>
-        <td>1111222233334444</td>
-        <td>2022-02-01</td>
-        <td>123</td>
-        <td><a href="#" id="show_1">Show Items</a></td>
-        <td class="rowBtn"><button class="btn btn-primary" type="submit">Edit</button></td>
-    </tr>
-    <tr>
-        <td colspan="5">
-            <div id="items_1" style="display: none;">
-                <br>Risk, 29.99
-            </div>
-        </td>
-    </tr>
-    <tr>
-        <th>
-            <div class="custom-control custom-checkbox">
-                <input type="checkbox" class="custom-control-input" id="customCheck2">
-                <label class="custom-control-label" for="customCheck2">123457</label>
-            </div>
-        </th>
-        <td>Jacob Thornton</td>
-        <td>Nester Coin</td>
-        <td>2020-02-10</td>
-        <td>55.98</td>
-        <td>1111222233334445</td>
-        <td>2022-03-01</td>
-        <td>124</td>
-        <td><a href="#" id="show_2">Show Items</a></td>
-        <td class="rowBtn"><button class="btn btn-primary" type="submit">Edit</button></td>
-    </tr>
-    <tr>
-        <td colspan="5">
-            <div id="items_2" style="display: none;">
-                <br>Risk, 29.99
-                <br>Scrabble, 25.99
-            </div>
-        </td>
-    </tr>
-    <tr>
-        <th>
-            <div class="custom-control custom-checkbox">
-                <input type="checkbox" class="custom-control-input" id="customCheck3">
-                <label class="custom-control-label" for="customCheck3">123458</label>
-            </div>
-        </th>
-        <td>Larry Bird</td>
-        <td>Della Narn</td>
-        <td>2020-02-11</td>
-        <td>179.97</td>
-        <td>1111222233334446</td>
-        <td>2022-04-01</td>
-        <td>125</td>
-        <td><a href="#" id="show_3">Show Items</a></td>
-        <td class="rowBtn"><button class="btn btn-primary" type="submit">Edit</button></td>
-    </tr>
-    <tr>
-        <td colspan="5">
-            <div id="items_3" style="display: none;">
-                <br>Ticket to Ride, 59.99 <br />
-                Ticket to Ride, 59.99 <br />
-                Ticket to Ride, 59.99
-            </div>
-        </td>
-    </tr>
-    -->
     </tbody>
 
 </table>
@@ -214,15 +138,15 @@ $(document).ready(function() {
         var newrow = '<div class="form-row">' +
             '<div class="input-group">' +
             '<div class="col-md-10">' +
-            '<select class="form-control" name="item_id" id="itemSelect">' +
+            '<select class="form-control" name="item_id_' + count + '" id="itemSelect">' +
             '<option>Select item</option>' +
             '{% for i in itemDD %}' +
-            '<option value={{i.0}}>{{i.1}}, {{i.2}}</option>' +
+            '<option value="{{i.0}}">{{i.1}}, {{i.2}}</option>' +
             '{% endfor %}' +
             '</select>' +
             '</div>' +
             '<div class="col-md-2">' +
-            '<input type="number" class="form-control">' +
+            '<input type="number" class="form-control" name="quantity_' + count + '" id="quantityInput">' +
             '</div>' +
             '</div>' +
             '</div>';

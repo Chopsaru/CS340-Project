@@ -82,7 +82,7 @@ CREATE TABLE `Items` (
   `price` decimal(6,2) NOT NULL,
   `item_name` varchar(255) NOT NULL,
   `description` text NOT NULL,
-  `quantity_available` int(3) NOT NULL
+  `quantity_available` int(4) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -105,9 +105,9 @@ CREATE TABLE `Orders` (
   `cust_id` int(6) NOT NULL,
   `emp_id` int(6) NOT NULL,
   `date` date NOT NULL,
-  `total` decimal(6,2) NOT NULL,
-  `credit_card_num` int(16) NOT NULL,
-  `exp_date` int(4) NOT NULL,
+  `total` decimal(6,2),
+  `credit_card_num` bigint(16) NOT NULL,
+  `exp_date` date NOT NULL,
   `credit_card_code` int(3) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -116,9 +116,9 @@ CREATE TABLE `Orders` (
 --
 
 INSERT INTO `Orders` (`order_id`, `cust_id`, `emp_id`, `date`, `total`, `credit_card_num`, `exp_date`, `credit_card_code`) VALUES
-(1, 1, 1, '2020-01-01', '115.97', 2147483647, 2022, 123),
-(2, 2, 2, '2020-02-01', '103.96', 2147483647, 2022, 124),
-(3, 3, 3, '2020-02-15', '179.96', 2147483647, 2022, 125);
+(1, 1, 1, '2020-01-01', '115.97', 1111222233334444, 2022, 123),
+(2, 2, 2, '2020-02-01', '103.96', 1111222233334445, 2022, 124),
+(3, 3, 3, '2020-02-15', '179.96', 1111222233334446, 2022, 125);
 
 -- --------------------------------------------------------
 
@@ -129,7 +129,7 @@ INSERT INTO `Orders` (`order_id`, `cust_id`, `emp_id`, `date`, `total`, `credit_
 CREATE TABLE `Order_Items` (
   `order_id` int(6) NOT NULL,
   `item_id` int(6) NOT NULL,
-  `quantity` int(11) NOT NULL
+  `quantity` int(3) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -189,25 +189,25 @@ ALTER TABLE `Order_Items`
 -- AUTO_INCREMENT for table `Customers`
 --
 ALTER TABLE `Customers`
-  MODIFY `cust_id` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `cust_id` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
 
 --
 -- AUTO_INCREMENT for table `Employees`
 --
 ALTER TABLE `Employees`
-  MODIFY `emp_id` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `emp_id` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
 
 --
 -- AUTO_INCREMENT for table `Items`
 --
 ALTER TABLE `Items`
-  MODIFY `item_id` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=159;
+  MODIFY `item_id` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
 
 --
 -- AUTO_INCREMENT for table `Orders`
 --
 ALTER TABLE `Orders`
-  MODIFY `order_id` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `order_id` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
 
 --
 -- Constraints for dumped tables
