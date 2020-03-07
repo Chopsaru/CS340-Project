@@ -50,7 +50,7 @@ $(document).ready(function() {
         <div class="input-group">
             <div class="col-md-10">
                 <label for="itemSelect">Items</label>
-                <select class="form-control" name="item_id" id="itemSelect">
+                <select class="form-control" name="item_id" id="itemSelect" required>
                     <option>Select item</option>
                     {% for i in itemDD %}
                     <option value="{{i.0}}">{{i.1}}, {{i.2}}</option>
@@ -71,27 +71,23 @@ $(document).ready(function() {
 <table id="ordersTable" class="table table-bordered">
     <thead>
         <tr>
-            <th>Order id</th>
-            <th>Customer</th>
-            <th>Employee</th>
-            <th>Date</th>
-            <th>Total</th>
-            <th>Credit card number</th>
-            <th>Expiration date</th>
-            <th>Credit card code</th>
-            <th></th>
-            <th></th>
+            <th scope="col">Order id</th>
+            <th scope="col">Customer</th>
+            <th scope="col">Employee</th>
+            <th scope="col">Date</th>
+            <th scope="col">Total</th>
+            <th scope="col">Credit card number</th>
+            <th scope="col">Expiration date</th>
+            <th scope="col">Credit card code</th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+            <th scope="col"></th>
         </tr>
     </thead>
     <tbody>
         {% for r in rows %}
         <tr>
-            <th>
-                <div class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input" id="customCheck1">
-                    <label class="custom-control-label" for="customCheck1">{{r.0}}</label>
-                </div>
-            </th>
+            <td>{{r.0}}</td>
             <td>{{r[1]}}</td>
             <td>{{r[2]}}</td>
             <td>{{r[3]}}</td>
@@ -101,6 +97,7 @@ $(document).ready(function() {
             <td>{{r[7]}}</td>
             <td><a href="#" id="show_{{r.0}}">Show Items</a></td>
             <td class="rowBtn"><button class="btn btn-primary" type="submit">Edit</button></td>
+            <td><button class="rowBtn, btn btn-danger" type="submit" onclick="window.location='/deleteOrder/{{r.0}}'">Delete</button></td>
         </tr>
         
         <tr>
@@ -123,7 +120,6 @@ $(document).ready(function() {
     </tbody>
 
 </table>
-<button class="btn btn-danger mt-3" type="submit">Delete selected</button>
 
 <script>
     var count = 1;
@@ -138,7 +134,7 @@ $(document).ready(function() {
         var newrow = '<div class="form-row">' +
             '<div class="input-group">' +
             '<div class="col-md-10">' +
-            '<select class="form-control" name="item_id_' + count + '" id="itemSelect">' +
+            '<select class="form-control" name="item_id_' + count + '" id="itemSelect" required>' +
             '<option>Select item</option>' +
             '{% for i in itemDD %}' +
             '<option value="{{i.0}}">{{i.1}}, {{i.2}}</option>' +

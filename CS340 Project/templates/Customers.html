@@ -41,26 +41,22 @@ $(document).ready(function() {
             <th class="th-sm" scope="col">Email</th>
             <th class="th-sm" scope="col">Phone number</th>
             <th scope="col"></th>
+            <th scope="col"></th>
         </tr>
     </thead>
     <tbody>
         {% for r in rows %}
         <tr>
-            <th>
-                <div class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input" id="customCheck1">
-                    <label class="custom-control-label" for="customCheck1">{{r.0}}</label>
-                </div>
-            </th>
+            <td>{{r.0}}</td>
             <td>{{r[2]}}</td>
             <td>{{r[3]}}</td>
             <td>{{r[1]}}</td>
             <td>{{r[4]}}</td>
             <td class="rowBtn"><button class="btn btn-primary" type="submit">Edit</button></td>
+            <td><button class="rowBtn, btn btn-danger" type="submit" onclick="window.location='/deleteCust/{{r.0}}'">Delete</button></td>
         </tr>
         {% endfor %}
     </tbody>
 </table>
 
-<button class="btn btn-danger" type="submit">Delete selected</button>
 {% endblock %}

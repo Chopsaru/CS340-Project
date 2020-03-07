@@ -146,16 +146,16 @@ DROP TABLE IF EXISTS `Orders`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `Orders` (
   `order_id` int(6) NOT NULL AUTO_INCREMENT,
-  `cust_id` int(6) NOT NULL,
-  `emp_id` int(6) NOT NULL,
+  `cust_id` int(6),
+  `emp_id` int(6),
   `date` date NOT NULL,
   `total` decimal(6,2) NOT NULL,
   `credit_card_num` int(16) NOT NULL,
   `exp_date` int(4) NOT NULL,
   `credit_card_code` int(3) NOT NULL,
   PRIMARY KEY (`order_id`),
-  CONSTRAINT `Orders_ibfk_1` FOREIGN KEY (`cust_id`) REFERENCES `Customers` (`cust_id`),
-  CONSTRAINT `Orders_ibfk_2` FOREIGN KEY (`emp_id`) REFERENCES `Employees` (`emp_id`)
+  CONSTRAINT `Orders_ibfk_1` FOREIGN KEY (`cust_id`) REFERENCES `Customers` (`cust_id`) ON DELETE SET NULL,
+  CONSTRAINT `Orders_ibfk_2` FOREIGN KEY (`emp_id`) REFERENCES `Employees` (`emp_id`) ON DELETE SET NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
