@@ -19,7 +19,7 @@
             <h1>Edit Employee</h1>
         </div>
 
-        <form id="edit-employee" action="/edit_employees/{{r.0}}" method="POST">
+        <form id="edit-employee" action="/Employees/edit/{{r.0}}" method="POST">
             <div class="form-row">
                 <div class="col mb-3">
                     <label for="validationDefault01">First name</label>
@@ -31,7 +31,7 @@
                 </div>
             </div>
         </form>
-        <button class="btn btn-success" type="submit" form="edit-employees">Submit Changes</button>
+        <button class="btn btn-success" type="submit" form="edit-employee">Submit Changes</button>
         <button class="btn btn-danger" onclick="window.location='/Employees'">Cancel</button>
         {% endfor %}
     </div>

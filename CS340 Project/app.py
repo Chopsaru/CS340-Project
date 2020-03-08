@@ -56,29 +56,27 @@ def Items():
 def editItem(id):
     db_connection = connect_to_database()
 
-    if request.method == 'GET':             # render the edit Employees webpage
+    if request.method == 'GET':             # render the edit Items webpage
         print("Fetching and rendering edit item web page")
         query = "SELECT * from Items WHERE item_id = %s;"
         data = (id,)
         result = execute_query(db_connection, query, data).fetchall();
         print(result)
         return render("editItem.html", rows=result)
-#    elif request.method == 'POST':          # edit an employee
-#        print("Adding a row Employees web page")
-#        first_name = request.form['first_name']
-#        last_name = request.form['last_name']
-#        query = "INSERT INTO Employees (first_name, last_name) VALUES (%s, %s);"
-#        data = (first_name, last_name)
-#        result = execute_query(db_connection, query, data).fetchall();
-#        print(result)
-#        print("Employee added.")
+    elif request.method == 'POST':          # edit an item
+        print("Adding a row Items web page")
+        price = request.form['price']
+        item_name = request.form['item_name']
+        description = request.form['description']
+        quantity_available = request.form['quantity_available']
+        query = "UPDATE Items SET price = %s, item_name = %s, description = %s, quantity_available = %s WHERE item_id = %s;"
+        data = (price, item_name, description, quantity_available, id)
+        result = execute_query(db_connection, query, data).fetchall();
+        print(result)
+        print("Item edited.")
 
-        # render the web page again after adding an employee
-#        print("Fetching and rendering Employees web page")
-#        query2 = "SELECT * from Employees;"
-#        result2 = execute_query(db_connection, query2).fetchall();
-#        print(result2)
-#        return render("Employees.html", rows=result2)
+        #return to the Items web page
+        return redirect(url_for('Items'))
 
 @app.route('/deleteItem/<int:id>')
 def deleteItem(id):
@@ -279,29 +277,27 @@ def Customers():
 def editCustomer(id):
     db_connection = connect_to_database()
 
-    if request.method == 'GET':             # render the edit Employees webpage
+    if request.method == 'GET':             # render the edit customer webpage
         print("Fetching and rendering edit customer web page")
         query = "SELECT * from Customers WHERE cust_id = %s;"
         data = (id,)
         result = execute_query(db_connection, query, data).fetchall();
         print(result)
         return render("editCustomer.html", rows=result)
-#    elif request.method == 'POST':          # edit an employee
-#        print("Adding a row Employees web page")
-#        first_name = request.form['first_name']
-#        last_name = request.form['last_name']
-#        query = "INSERT INTO Employees (first_name, last_name) VALUES (%s, %s);"
-#        data = (first_name, last_name)
-#        result = execute_query(db_connection, query, data).fetchall();
-#        print(result)
-#        print("Employee added.")
+    elif request.method == 'POST':          # edit a customer
+        print("Editing a row Customers web page")
+        email = request.form['email']
+        first_name = request.form['first_name']
+        last_name = request.form['last_name']
+        phone_number = request.form['phone_number']
+        query = "UPDATE Customers SET email = %s, first_name = %s, last_name = %s, phone_number = %s WHERE cust_id = %s;"
+        data = (email, first_name, last_name, phone_number, id)
+        result = execute_query(db_connection, query, data).fetchall();
+        print(result)
+        print("Customer edited.")
 
-        # render the web page again after adding an employee
-#        print("Fetching and rendering Employees web page")
-#        query2 = "SELECT * from Employees;"
-#        result2 = execute_query(db_connection, query2).fetchall();
-#        print(result2)
-#        return render("Employees.html", rows=result2)
+        #return to the Items web page
+        return redirect(url_for('Customers'))
 
 @app.route('/deleteCust/<int:id>')
 def deleteCust(id):
@@ -357,22 +353,18 @@ def editEmp(id):
         result = execute_query(db_connection, query, data).fetchall();
         print(result)
         return render("editEmployees.html", rows=result)
-#    elif request.method == 'POST':          # edit an employee
-#        print("Adding a row Employees web page")
-#        first_name = request.form['first_name']
-#        last_name = request.form['last_name']
-#        query = "INSERT INTO Employees (first_name, last_name) VALUES (%s, %s);"
-#        data = (first_name, last_name)
-#        result = execute_query(db_connection, query, data).fetchall();
-#        print(result)
-#        print("Employee added.")
+    elif request.method == 'POST':          # edit an employee
+        print("Editing a row on Employees web page")
+        first_name = request.form['first_name']
+        last_name = request.form['last_name']
+        query = "UPDATE Employees SET first_name = %s, last_name = %s WHERE emp_id = %s;"
+        data = (first_name, last_name, id)
+        result = execute_query(db_connection, query, data).fetchall();
+        print(result)
+        print("Employee edited.")
 
-        # render the web page again after adding an employee
-#        print("Fetching and rendering Employees web page")
-#        query2 = "SELECT * from Employees;"
-#        result2 = execute_query(db_connection, query2).fetchall();
-#        print(result2)
-#        return render("Employees.html", rows=result2)
+        #return to the Items web page
+        return redirect(url_for('Employees'))
 
 @app.route('/deleteEmp/<int:id>')
 def deleteEmp(id):
@@ -385,8 +377,6 @@ def deleteEmp(id):
     execute_query(db_connection, 'SET FOREIGN_KEY_CHECKS=1;')
     print(str(result.rowcount) + "row deleted")
     return redirect(url_for('Employees'))
-
-
 
 
 if __name__ == '__main__':
