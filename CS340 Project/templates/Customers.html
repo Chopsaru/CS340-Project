@@ -26,7 +26,7 @@ $(document).ready(function() {
         </div>
         <div class="col mb-3">
             <label for="validationDefault04">Phone number</label>
-            <input type="tel" name="phone_number" class="form-control" id="validationDefault04" required>
+            <input type="tel" name="phone_number" class="form-control" id="validationDefault04" maxlength="10" minlength="10" required>
         </div>
     </div>
     <button class="btn btn-success" type="submit">Add customer</button>
@@ -36,7 +36,7 @@ $(document).ready(function() {
     <thead>
         <tr>
             <th class="th-sm" scope="col">Customer id</th>
-            <th class="th-sm"scope="col">First</th>
+            <th class="th-sm" scope="col">First</th>
             <th class="th-sm" scope="col">Last</th>
             <th class="th-sm" scope="col">Email</th>
             <th class="th-sm" scope="col">Phone number</th>
@@ -52,7 +52,7 @@ $(document).ready(function() {
             <td>{{r[3]}}</td>
             <td>{{r[1]}}</td>
             <td>{{r[4]}}</td>
-            <td class="rowBtn"><button class="btn btn-primary" type="submit">Edit</button></td>
+            <td class="rowBtn"><button class="btn btn-primary" type="submit" onclick="window.location='/Customers/edit/{{r.0}}'">Edit</button></td>
             <td><button class="rowBtn, btn btn-danger" type="submit" onclick="window.location='/deleteCust/{{r.0}}'">Delete</button></td>
         </tr>
         {% endfor %}

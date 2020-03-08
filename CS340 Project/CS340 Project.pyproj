@@ -38,12 +38,16 @@
     <Content Include="requirements.txt" />
     <Content Include="static\BGILogo.png" />
     <Content Include="static\style.css" />
+    <Content Include="templates\editCustomer.html" />
+    <Content Include="templates\editOrders.html" />
     <Content Include="templates\index.html" />
     <Content Include="templates\menu.html" />
     <Content Include="templates\Items.html" />
     <Content Include="templates\Orders.html" />
     <Content Include="templates\Customers.html" />
     <Content Include="templates\Employees.html" />
+    <Content Include="templates\editEmployees.html" />
+    <Content Include="templates\editItem.html" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="db_connector\" />

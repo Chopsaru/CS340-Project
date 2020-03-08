@@ -52,7 +52,7 @@ $(document).ready(function() {
             <td>{{r[1]}}</td>
             <td>{{r[4]}}</td>
             <td>{{r[3]}}</td>
-            <td class="rowBtn"><button class="btn btn-primary" type="submit">Edit</button></td>
+            <td class="rowBtn"><button class="btn btn-primary" type="submit" onclick="window.location='/Items/edit/{{r.0}}'">Edit</button></td>
             <td><button class="rowBtn, btn btn-danger" type="submit" onclick="window.location='/deleteItem/{{r.0}}'">Delete</button></td>
         </tr>
         {% endfor %}

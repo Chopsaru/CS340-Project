@@ -33,12 +33,13 @@ SET time_zone = "+00:00";
 -- Table structure for table `Customers`
 --
 
+DROP TABLE IF EXISTS `Customers`;
 CREATE TABLE `Customers` (
   `cust_id` int(6) NOT NULL,
-  `email` varchar(255) NOT NULL,
+  `email` varchar(255),
   `first_name` varchar(255) NOT NULL,
   `last_name` varchar(255) NOT NULL,
-  `phone_number` int(10) NOT NULL
+  `phone_number` int(10)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -56,6 +57,7 @@ INSERT INTO `Customers` (`cust_id`, `email`, `first_name`, `last_name`, `phone_n
 -- Table structure for table `Employees`
 --
 
+DROP TABLE IF EXISTS `Employees`;
 CREATE TABLE `Employees` (
   `emp_id` int(6) NOT NULL,
   `first_name` varchar(255) NOT NULL,
@@ -77,11 +79,12 @@ INSERT INTO `Employees` (`emp_id`, `first_name`, `last_name`) VALUES
 -- Table structure for table `Items`
 --
 
+DROP TABLE IF EXISTS `Items`;
 CREATE TABLE `Items` (
   `item_id` int(6) NOT NULL,
   `price` decimal(6,2) NOT NULL,
   `item_name` varchar(255) NOT NULL,
-  `description` text NOT NULL,
+  `description` text,
   `quantity_available` int(4) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -100,10 +103,11 @@ INSERT INTO `Items` (`item_id`, `price`, `item_name`, `description`, `quantity_a
 -- Table structure for table `Orders`
 --
 
+DROP TABLE IF EXISTS `Orders`;
 CREATE TABLE `Orders` (
   `order_id` int(6) NOT NULL,
-  `cust_id` int(6) NOT NULL,
-  `emp_id` int(6) NOT NULL,
+  `cust_id` int(6),
+  `emp_id` int(6),
   `date` date NOT NULL,
   `total` decimal(6,2),
   `credit_card_num` bigint(16) NOT NULL,
@@ -126,6 +130,7 @@ INSERT INTO `Orders` (`order_id`, `cust_id`, `emp_id`, `date`, `total`, `credit_
 -- Table structure for table `Order_Items`
 --
 
+DROP TABLE IF EXISTS `Order_Items`;
 CREATE TABLE `Order_Items` (
   `order_id` int(6) NOT NULL,
   `item_id` int(6) NOT NULL,
@@ -217,8 +222,8 @@ ALTER TABLE `Orders`
 -- Constraints for table `Orders`
 --
 ALTER TABLE `Orders`
-  ADD CONSTRAINT `Orders_ibfk_1` FOREIGN KEY (`cust_id`) REFERENCES `Customers` (`cust_id`),
-  ADD CONSTRAINT `Orders_ibfk_2` FOREIGN KEY (`emp_id`) REFERENCES `Employees` (`emp_id`);
+  ADD CONSTRAINT `Orders_ibfk_1` FOREIGN KEY (`cust_id`) REFERENCES `Customers` (`cust_id`) ON DELETE SET NULL,
+  ADD CONSTRAINT `Orders_ibfk_2` FOREIGN KEY (`emp_id`) REFERENCES `Employees` (`emp_id`)ON DELETE SET NULL;
 
 --
 -- Constraints for table `Order_Items`

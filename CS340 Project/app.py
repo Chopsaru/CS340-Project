@@ -13,10 +13,16 @@ app = Flask(__name__)
 # Make the WSGI interface available at the top level so wfastcgi can get it.
 wsgi_app = app.wsgi_app
 
+#=========================================================
+# Homepage route
+#=========================================================
 @app.route('/')
 def index():
     return render("index.html")
 
+#=========================================================
+# Item routes
+#=========================================================
 @app.route('/Items', methods=['POST', 'GET'])
 def Items():
     db_connection = connect_to_database()
@@ -46,6 +52,49 @@ def Items():
         print(result2)
         return render("Items.html", rows=result2)
 
+@app.route('/Items/edit/<int:id>', methods=['POST', 'GET'])
+def editItem(id):
+    db_connection = connect_to_database()
+
+    if request.method == 'GET':             # render the edit Employees webpage
+        print("Fetching and rendering edit item web page")
+        query = "SELECT * from Items WHERE item_id = %s;"
+        data = (id,)
+        result = execute_query(db_connection, query, data).fetchall();
+        print(result)
+        return render("editItem.html", rows=result)
+#    elif request.method == 'POST':          # edit an employee
+#        print("Adding a row Employees web page")
+#        first_name = request.form['first_name']
+#        last_name = request.form['last_name']
+#        query = "INSERT INTO Employees (first_name, last_name) VALUES (%s, %s);"
+#        data = (first_name, last_name)
+#        result = execute_query(db_connection, query, data).fetchall();
+#        print(result)
+#        print("Employee added.")
+
+        # render the web page again after adding an employee
+#        print("Fetching and rendering Employees web page")
+#        query2 = "SELECT * from Employees;"
+#        result2 = execute_query(db_connection, query2).fetchall();
+#        print(result2)
+#        return render("Employees.html", rows=result2)
+
+@app.route('/deleteItem/<int:id>')
+def deleteItem(id):
+    db_connection = connect_to_database()
+    query = "DELETE FROM Items WHERE item_id = %s"
+    data = (id,)
+
+    execute_query(db_connection, 'SET FOREIGN_KEY_CHECKS=0;')
+    result = execute_query(db_connection, query, data)
+    execute_query(db_connection, 'SET FOREIGN_KEY_CHECKS=1;')
+    print(str(result.rowcount) + "row deleted")
+    return redirect(url_for('Items'))
+
+#=========================================================
+# Orders routes
+#=========================================================
 @app.route('/Orders', methods=['POST', 'GET'])
 def Orders():
     db_connection = connect_to_database()
@@ -147,6 +196,56 @@ def Orders():
 
         return render("Orders.html", rows=rowResult, itemRow=itemRowResult, custDD=customerDDResult, empDD=employeeDDResult, itemDD=itemDDResult)
 
+@app.route('/Orders/edit/<int:id>', methods=['POST', 'GET'])
+def editOrder(id):
+    db_connection = connect_to_database()
+
+    if request.method == 'GET':             # render the edit Orders webpage
+        print("Fetching and rendering edit order web page")
+
+        rowQuery = "SELECT order_id, CONCAT(Customers.first_name,' ',Customers.last_name) AS cust_name, CONCAT(Employees.first_name,' ',Employees.last_name) AS emp_name, date, total, credit_card_num, exp_date, credit_card_code FROM Orders LEFT JOIN Customers ON Orders.cust_id = Customers.cust_id LEFT JOIN Employees ON Orders.emp_id = Employees.emp_id;"
+        rowResult = execute_query(db_connection, rowQuery).fetchall();
+        print(rowResult)
+
+        customerDDQuery = "SELECT Customers.cust_id, CONCAT(Customers.first_name,' ',Customers.last_name) FROM Customers;"
+        customerDDResult = execute_query(db_connection, customerDDQuery).fetchall();
+        print(customerDDResult)
+
+        employeeDDQuery = "SELECT Employees.emp_id, CONCAT(Employees.first_name,' ',Employees.last_name) FROM Employees;"
+        employeeDDResult = execute_query(db_connection, employeeDDQuery).fetchall();
+        print(employeeDDResult)
+
+        itemDDQuery = "SELECT Items.item_id, Items.item_name, Items.price FROM Items;"
+        itemDDResult = execute_query(db_connection, itemDDQuery).fetchall();
+        print(itemDDResult)
+
+        itemRowQuery = "SELECT Orders.order_id, Items.item_name, Order_Items.quantity FROM Orders LEFT JOIN Order_Items ON Orders.order_id = Order_Items.order_id LEFT JOIN Items ON Order_Items.item_id = Items.item_id;"
+        itemRowResult = execute_query(db_connection, itemRowQuery).fetchall();
+        print(itemRowResult);
+
+        return render("editOrders.html", rows=rowResult, itemRow=itemRowResult, custDD=customerDDResult, empDD=employeeDDResult, itemDD=itemDDResult)
+
+    elif request.method == 'POST':
+        return "....but nothing happened"
+    #will finish this bit later ¯\_(ツ)_/¯
+
+@app.route('/deleteOrder/<int:id>')
+def deleteOrder(id):
+    db_connection = connect_to_database()
+    query1 = "DELETE FROM Orders WHERE order_id = %s"
+    query2 = "DELETE FROM Order_Items WHERE order_id = %s"
+    data = (id,)
+
+    execute_query(db_connection, 'SET FOREIGN_KEY_CHECKS=0;')
+    result = execute_query(db_connection, query1, data)
+    result = execute_query(db_connection, query2, data)
+    execute_query(db_connection, 'SET FOREIGN_KEY_CHECKS=1;')
+    print(str(result.rowcount) + "row deleted")
+    return redirect(url_for('Orders'))
+
+#=========================================================
+# Customers routes
+#=========================================================
 @app.route('/Customers', methods=['POST', 'GET'])
 def Customers():
     db_connection = connect_to_database()
@@ -176,6 +275,50 @@ def Customers():
         print(result2)
         return render("Customers.html", rows=result2)
 
+@app.route('/Customers/edit/<int:id>', methods=['POST', 'GET'])
+def editCustomer(id):
+    db_connection = connect_to_database()
+
+    if request.method == 'GET':             # render the edit Employees webpage
+        print("Fetching and rendering edit customer web page")
+        query = "SELECT * from Customers WHERE cust_id = %s;"
+        data = (id,)
+        result = execute_query(db_connection, query, data).fetchall();
+        print(result)
+        return render("editCustomer.html", rows=result)
+#    elif request.method == 'POST':          # edit an employee
+#        print("Adding a row Employees web page")
+#        first_name = request.form['first_name']
+#        last_name = request.form['last_name']
+#        query = "INSERT INTO Employees (first_name, last_name) VALUES (%s, %s);"
+#        data = (first_name, last_name)
+#        result = execute_query(db_connection, query, data).fetchall();
+#        print(result)
+#        print("Employee added.")
+
+        # render the web page again after adding an employee
+#        print("Fetching and rendering Employees web page")
+#        query2 = "SELECT * from Employees;"
+#        result2 = execute_query(db_connection, query2).fetchall();
+#        print(result2)
+#        return render("Employees.html", rows=result2)
+
+@app.route('/deleteCust/<int:id>')
+def deleteCust(id):
+    db_connection = connect_to_database()
+    query = "DELETE FROM Customers WHERE cust_id = %s"
+    data = (id,)
+
+    execute_query(db_connection, 'SET FOREIGN_KEY_CHECKS=0;')
+    result = execute_query(db_connection, query, data)
+    execute_query(db_connection, 'SET FOREIGN_KEY_CHECKS=1;')
+    print(str(result.rowcount) + "row deleted")
+    return redirect(url_for('Customers'))
+
+
+#=========================================================
+# Employees routes
+#=========================================================
 @app.route('/Employees', methods=['POST', 'GET'])
 def Employees():
     db_connection = connect_to_database()
@@ -203,55 +346,48 @@ def Employees():
         print(result2)
         return render("Employees.html", rows=result2)
 
+@app.route('/Employees/edit/<int:id>', methods=['POST', 'GET'])
+def editEmp(id):
+    db_connection = connect_to_database()
+
+    if request.method == 'GET':             # render the edit Employees webpage
+        print("Fetching and rendering edit employees web page")
+        query = "SELECT * from Employees WHERE emp_id = %s;"
+        data = (id,)
+        result = execute_query(db_connection, query, data).fetchall();
+        print(result)
+        return render("editEmployees.html", rows=result)
+#    elif request.method == 'POST':          # edit an employee
+#        print("Adding a row Employees web page")
+#        first_name = request.form['first_name']
+#        last_name = request.form['last_name']
+#        query = "INSERT INTO Employees (first_name, last_name) VALUES (%s, %s);"
+#        data = (first_name, last_name)
+#        result = execute_query(db_connection, query, data).fetchall();
+#        print(result)
+#        print("Employee added.")
+
+        # render the web page again after adding an employee
+#        print("Fetching and rendering Employees web page")
+#        query2 = "SELECT * from Employees;"
+#        result2 = execute_query(db_connection, query2).fetchall();
+#        print(result2)
+#        return render("Employees.html", rows=result2)
+
 @app.route('/deleteEmp/<int:id>')
 def deleteEmp(id):
     db_connection = connect_to_database()
     query = "DELETE FROM Employees WHERE emp_id = %s"
     data = (id,)
 
-    #execute_query(db_connection, 'SET FOREIGN_KEY_CHECKS=0;')
+    execute_query(db_connection, 'SET FOREIGN_KEY_CHECKS=0;')
     result = execute_query(db_connection, query, data)
-    #execute_query(db_connection, 'SET FOREIGN_KEY_CHECKS=1;')
+    execute_query(db_connection, 'SET FOREIGN_KEY_CHECKS=1;')
     print(str(result.rowcount) + "row deleted")
     return redirect(url_for('Employees'))
 
-@app.route('/deleteCust/<int:id>')
-def deleteCust(id):
-    db_connection = connect_to_database()
-    query = "DELETE FROM Customers WHERE cust_id = %s"
-    data = (id,)
 
-    #execute_query(db_connection, 'SET FOREIGN_KEY_CHECKS=0;')
-    result = execute_query(db_connection, query, data)
-    #execute_query(db_connection, 'SET FOREIGN_KEY_CHECKS=1;')
-    print(str(result.rowcount) + "row deleted")
-    return redirect(url_for('Customers'))
 
-@app.route('/deleteItem/<int:id>')
-def deleteItem(id):
-    db_connection = connect_to_database()
-    query = "DELETE FROM Items WHERE item_id = %s"
-    data = (id,)
-
-    #execute_query(db_connection, 'SET FOREIGN_KEY_CHECKS=0;')
-    result = execute_query(db_connection, query, data)
-    #execute_query(db_connection, 'SET FOREIGN_KEY_CHECKS=1;')
-    print(str(result.rowcount) + "row deleted")
-    return redirect(url_for('Items'))
-
-@app.route('/deleteOrder/<int:id>')
-def deleteOrder(id):
-    db_connection = connect_to_database()
-    query1 = "DELETE FROM Orders WHERE order_id = %s"
-    query2 = "DELETE FROM Order_Items WHERE order_id = %s"
-    data = (id,)
-
-    execute_query(db_connection, 'SET FOREIGN_KEY_CHECKS=0;')
-    result = execute_query(db_connection, query1, data)
-    result = execute_query(db_connection, query2, data)
-    execute_query(db_connection, 'SET FOREIGN_KEY_CHECKS=1;')
-    print(str(result.rowcount) + "row deleted")
-    return redirect(url_for('Orders'))
 
 if __name__ == '__main__':
     import os

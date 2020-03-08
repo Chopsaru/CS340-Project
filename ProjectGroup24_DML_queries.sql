@@ -51,8 +51,8 @@ DELETE FROM Employees WHERE emp_id=:emp_idINPUT_FROM_CHECKBOXES	/*loop this quer
 SELECT order_id, CONCAT(Customers.first_name,' ',Customers.last_name) AS cust_name, CONCAT(Employees.first_name,' ',Employees.last_name) AS emp_name,
 date, total, credit_card_num, exp_date, credit_card_code
 FROM Orders
-INNER JOIN Customers ON Orders.cust_id = Customers.cust_id
-INNER JOIN Employees ON Orders.emp_id = Employees.emp_id
+LEFT JOIN Customers ON Orders.cust_id = Customers.cust_id
+LEFT JOIN Employees ON Orders.emp_id = Employees.emp_id
 
 -- queries for displaying Customers, Employees, and Items dropdown menus
 SELECT CONCAT(Customers.first_name,' ',Customers.last_name) FROM Customers
@@ -62,8 +62,8 @@ SELECT Items.item_name, Items.price Items.quantity_available FROM Items
 -- queries for displaying Order_Items under each order in the Orders table
 SELECT Orders.order_id, Items.item_name, Order_Items.quantity, Items.price * Order_Items.quantity AS item_total
 FROM Orders
-INNER JOIN Order_Items ON Orders.order_id = Order_Items.order_id
-INNER JOIN Items ON Order_Items.item_id = Items.item_id
+LEFT JOIN Order_Items ON Orders.order_id = Order_Items.order_id
+LEFT JOIN Items ON Order_Items.item_id = Items.item_id
 
 -- query for adding a new order
 INSERT INTO Orders (cust_id, emp_id, date, total, credit_card_num, exp_date, credit_card_code)
