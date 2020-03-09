@@ -13,26 +13,34 @@
 </head>
 <body>
     <div class="container">
-        {%for r in rows %}
         <div class="orders">
             <h1>Edit Order</h1>
         </div>
 
+        {% for r in rows %}
         <form id="edit-order" action="/Orders/edit/{{r.0}}" method="POST">
             <div class="form-row">
                 <div class="col">
                     <label for="custSelect">Customer</label>
-                    <select class="form-control" name="order_id" id="orderSelect" value="{{r[1]}}" required>
+                    <select class="form-control" name="order_id" id="custSelect" required>
                         {% for c in custDD %}
-                        <option value="{{c.0}}">{{c.1}}</option>
+                            {% if r.1 == c.0 %}
+                                <option selected value="{{c.0}}">{{c.1}}</option>
+                            {% else %}
+                                <option value="{{c.0}}">{{c.1}}</option>
+                            {% endif %}
                         {% endfor %}
                     </select>
                 </div>
                 <div class="col">
                     <label for="empSelect">Employee</label>
-                    <select class="form-control" name="emp_id" id="empSelect" value="{{r[2]}}" required>
+                    <select class="form-control" name="emp_id" id="empSelect" required>
                         {% for e in empDD %}
-                        <option value="{{e.0}}">{{e.1}}</option>
+                            {% if r.2 == e.0 %}
+                                <option selected value="{{e.0}}">{{e.1}}</option>
+                            {% else %}
+                                <option value="{{e.0}}">{{e.1}}</option>
+                            {% endif %}
                         {% endfor %}
                     </select>
                 </div>
@@ -56,31 +64,40 @@
                 </div>
             </div>
             <div class="form-row">
+                <div class="col-md-10">
+                    <label for="itemSelect">Items</label>
+                </div>
+                <div class="col-md-2">
+                    <label for="quantityInput">Quantity</label>
+                </div>
+            </div>
+            {% for q in itemRow %}
+            <div class="form-row">
                 <div class="input-group">
                     <div class="col-md-10">
-                        <label for="itemSelect">Items</label>
-
-
-                        {% for q in itemrow %}
-                        <select class="form-control" name="item_id" id="itemSelect" value="{{q.1}}" required>
+                        <select class="form-control" name="item_id{{q.1}}" id="itemSelect" required>
+                            <option disabled hidden>Select item</option>
                             {% for i in itemDD %}
-                            <option value="{{i.0}}">{{i.1}}</option>
+                                {% if q.1 == i.0 %}
+                                    <option selected value="{{i.0}}">{{i.1}}, {{i.2}}</option>
+                                {% else %}
+                                    <option value="{{i.0}}">{{i.1}}, {{i.2}}</option>
+                                {% endif %}
                             {% endfor %}
                         </select>
                     </div>
                     <div class="col-md-2">
-                        <label for="quantityInput">Quantity</label>
-                        <input type="number" class="form-control" name="quantity" id="quantityInput" value="{{q.2}}">
+                        <input type="number" class="form-control" name="quantity" id="quantityInput" value="{{q.2}}" required>
                     </div>
-                    {% endfor %}
-
-
                 </div>
             </div>
+            {% endfor %}
         </form>
-        <button class="btn btn-success" type="submit" form="edit-item">Submit Changes</button>
-        <button class="btn btn-danger" onclick="window.location='/Items'">Cancel</button>
         {% endfor %}
+        <button class="btn btn-secondary mt-3" id="addItemBtn" type="submit" form="edit-order">Add item to order</button>
+        <br>
+        <button class="btn btn-success mt-3 mb-3 mr-2" type="submit" form="edit-order">Submit Changes</button>
+        <button class="btn btn-danger mt-3 mb-3" onclick="window.location='/Orders'">Cancel</button>
     </div>
 
     <script>
@@ -88,25 +105,26 @@
     $("#addItemBtn").click(function (event) {
         event.preventDefault();
 
-        $("#orderForm").append(addNewRow(count));
+        $("#edit-order").append(addNewRow(count));
         count++;
     });
 
     function addNewRow(count) {
-        var newrow = '<div class="form-row">' +
-            '<div class="input-group">' +
-            '<div class="col-md-10">' +
-            '<select class="form-control" name="item_id_' + count + '" id="itemSelect" required>' +
-            '<option>Select item</option>' +
-            '{% for i in itemDD %}' +
-            '<option value="{{i.0}}">{{i.1}}, {{i.2}}</option>' +
-            '{% endfor %}' +
-            '</select>' +
-            '</div>' +
-            '<div class="col-md-2">' +
-            '<input type="number" class="form-control" name="quantity_' + count + '" id="quantityInput" required>' +
-            '</div>' +
-            '</div>' +
+        var newrow =
+            '<div class="form-row">' +
+                '<div class="input-group">' +
+                    '<div class="col-md-10">' +
+                        '<select class="form-control" name="item_id_' + count + '" id="itemSelect" required>' +
+                            '<option selected disabled hidden>Select item</option>' +
+                            '{% for i in itemDD %}' +
+                            '<option value="{{i.0}}">{{i.1}}, {{i.2}}</option>' +
+                            '{% endfor %}' +
+                        '</select>' +
+                    '</div>' +
+                    '<div class="col-md-2">' +
+                        '<input type="number" class="form-control" name="quantity_' + count + '" id="quantityInput">' +
+                    '</div>' +
+                '</div>' +
             '</div>';
         return newrow;
     }

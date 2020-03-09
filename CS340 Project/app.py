@@ -172,35 +172,6 @@ def Orders():
 
         # render the web page again after adding an order and the order items
         print("Fetching and rendering Items web page")
-        rowQuery = "SELECT order_id, CONCAT(Customers.first_name,' ',Customers.last_name) AS cust_name, CONCAT(Employees.first_name,' ',Employees.last_name) AS emp_name, date, total, credit_card_num, exp_date, credit_card_code FROM Orders INNER JOIN Customers ON Orders.cust_id = Customers.cust_id INNER JOIN Employees ON Orders.emp_id = Employees.emp_id;"
-        rowResult = execute_query(db_connection, rowQuery).fetchall();
-        print(rowResult)
-
-        customerDDQuery = "SELECT Customers.cust_id, CONCAT(Customers.first_name,' ',Customers.last_name) FROM Customers;"
-        customerDDResult = execute_query(db_connection, customerDDQuery).fetchall();
-        print(customerDDResult)
-
-        employeeDDQuery = "SELECT Employees.emp_id, CONCAT(Employees.first_name,' ',Employees.last_name) FROM Employees;"
-        employeeDDResult = execute_query(db_connection, employeeDDQuery).fetchall();
-        print(employeeDDResult)
-
-        itemDDQuery = "SELECT Items.item_id, Items.item_name, Items.price FROM Items;"
-        itemDDResult = execute_query(db_connection, itemDDQuery).fetchall();
-        print(itemDDResult)
-
-        itemRowQuery = "SELECT Orders.order_id, Items.item_name, Order_Items.quantity, Items.price * Order_Items.quantity AS item_total FROM Orders INNER JOIN Order_Items ON Orders.order_id = Order_Items.order_id INNER JOIN Items ON Order_Items.item_id = Items.item_id;"
-        itemRowResult = execute_query(db_connection, itemRowQuery).fetchall();
-        print(itemRowResult);
-
-        return render("Orders.html", rows=rowResult, itemRow=itemRowResult, custDD=customerDDResult, empDD=employeeDDResult, itemDD=itemDDResult)
-
-@app.route('/Orders/edit/<int:id>', methods=['POST', 'GET'])
-def editOrder(id):
-    db_connection = connect_to_database()
-
-    if request.method == 'GET':             # render the edit Orders webpage
-        print("Fetching and rendering edit order web page")
-
         rowQuery = "SELECT order_id, CONCAT(Customers.first_name,' ',Customers.last_name) AS cust_name, CONCAT(Employees.first_name,' ',Employees.last_name) AS emp_name, date, total, credit_card_num, exp_date, credit_card_code FROM Orders LEFT JOIN Customers ON Orders.cust_id = Customers.cust_id LEFT JOIN Employees ON Orders.emp_id = Employees.emp_id;"
         rowResult = execute_query(db_connection, rowQuery).fetchall();
         print(rowResult)
@@ -217,8 +188,38 @@ def editOrder(id):
         itemDDResult = execute_query(db_connection, itemDDQuery).fetchall();
         print(itemDDResult)
 
-        itemRowQuery = "SELECT Orders.order_id, Items.item_name, Order_Items.quantity FROM Orders LEFT JOIN Order_Items ON Orders.order_id = Order_Items.order_id LEFT JOIN Items ON Order_Items.item_id = Items.item_id;"
+        itemRowQuery = "SELECT Orders.order_id, Items.item_name, Order_Items.quantity, Items.price * Order_Items.quantity AS item_total FROM Orders LEFT JOIN Order_Items ON Orders.order_id = Order_Items.order_id LEFT JOIN Items ON Order_Items.item_id = Items.item_id;"
         itemRowResult = execute_query(db_connection, itemRowQuery).fetchall();
+        print(itemRowResult);
+
+        return render("Orders.html", rows=rowResult, itemRow=itemRowResult, custDD=customerDDResult, empDD=employeeDDResult, itemDD=itemDDResult)
+
+@app.route('/Orders/edit/<int:id>', methods=['POST', 'GET'])
+def editOrder(id):
+    db_connection = connect_to_database()
+
+    if request.method == 'GET':             # render the edit Orders webpage
+        print("Fetching and rendering edit order web page")
+
+        rowQuery = "SELECT order_id, Customers.cust_id, Employees.emp_id, date, total, credit_card_num, exp_date, credit_card_code FROM Orders LEFT JOIN Customers ON Orders.cust_id = Customers.cust_id LEFT JOIN Employees ON Orders.emp_id = Employees.emp_id WHERE Orders.order_id = %s;"
+        data = (id,)
+        rowResult = execute_query(db_connection, rowQuery, data).fetchall();
+        print(rowResult)
+
+        customerDDQuery = "SELECT Customers.cust_id, CONCAT(Customers.first_name,' ',Customers.last_name) FROM Customers;"
+        customerDDResult = execute_query(db_connection, customerDDQuery).fetchall();
+        print(customerDDResult)
+
+        employeeDDQuery = "SELECT Employees.emp_id, CONCAT(Employees.first_name,' ',Employees.last_name) FROM Employees;"
+        employeeDDResult = execute_query(db_connection, employeeDDQuery).fetchall();
+        print(employeeDDResult)
+
+        itemDDQuery = "SELECT Items.item_id, Items.item_name, Items.price FROM Items;"
+        itemDDResult = execute_query(db_connection, itemDDQuery).fetchall();
+        print(itemDDResult)
+
+        itemRowQuery = "SELECT Orders.order_id, Order_Items.item_id, Order_Items.quantity FROM Orders LEFT JOIN Order_Items ON Orders.order_id = Order_Items.order_id LEFT JOIN Items ON Order_Items.item_id = Items.item_id WHERE Orders.order_id = %s;"
+        itemRowResult = execute_query(db_connection, itemRowQuery, data).fetchall();
         print(itemRowResult);
 
         return render("editOrders.html", rows=rowResult, itemRow=itemRowResult, custDD=customerDDResult, empDD=employeeDDResult, itemDD=itemDDResult)
