@@ -95,8 +95,11 @@ UPDATE Orders SET cust_id=:cust_idINPUT_FROM_DROPDOWN, emp_id=:emp_idINPUT_FROM_
 WHERE order_id=:order_idINPUT_FROM_CLICK
 
 -- query for editing order items
-UPDATE Order_Items SET quantity=:quantityIn
-WHERE order_id=:order_idINPUT_FROM_CLICK  AND item_id=:item_idINPUT_FROM_DROPDOWN
+DELETE FROM Order_Items WHERE order_id = %s;
+INSERT INTO Order_Items (order_id, item_id, quantity) VALUES (%s, %s, %s);
+
+-- query for getting the total of an order after updating the order
+UPDATE Orders SET total = (SELECT SUM(Items.price * Order_Items.quantity) FROM Order_Items INNER JOIN Items ON Order_Items.item_id = Items.item_id WHERE Order_Items.order_id = %s) WHERE Orders.order_id = %s;
 
 -- query for deleting order items
 DELETE FROM Order_Items WHERE order_id=:order_idINPUT_FROM_CLICK AND item_id=:item_idINPUT_FROM_CHECKBOXES

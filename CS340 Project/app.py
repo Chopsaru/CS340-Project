@@ -75,7 +75,7 @@ def editItem(id):
         print(result)
         print("Item edited.")
 
-        #return to the Items web page
+        # return to the Items web page
         return redirect(url_for('Items'))
 
 @app.route('/deleteItem/<int:id>')
@@ -218,16 +218,65 @@ def editOrder(id):
         itemDDResult = execute_query(db_connection, itemDDQuery).fetchall();
         print(itemDDResult)
 
-        itemRowQuery = "SELECT Orders.order_id, Order_Items.item_id, Order_Items.quantity FROM Orders LEFT JOIN Order_Items ON Orders.order_id = Order_Items.order_id LEFT JOIN Items ON Order_Items.item_id = Items.item_id WHERE Orders.order_id = %s;"
+        itemRowQuery = "SELECT Orders.order_id, Order_Items.item_id, Order_Items.quantity, (ROW_NUMBER() OVER(ORDER BY Order_Items.item_id)) AS rowNum FROM Orders LEFT JOIN Order_Items ON Orders.order_id = Order_Items.order_id LEFT JOIN Items ON Order_Items.item_id = Items.item_id WHERE Orders.order_id = %s;"
         itemRowResult = execute_query(db_connection, itemRowQuery, data).fetchall();
         print(itemRowResult);
 
-        return render("editOrders.html", rows=rowResult, itemRow=itemRowResult, custDD=customerDDResult, empDD=employeeDDResult, itemDD=itemDDResult)
+        itemRowCountQuery = "SELECT COUNT(Order_Items.item_id) FROM Orders LEFT JOIN Order_Items ON Orders.order_id = Order_Items.order_id WHERE Orders.order_id = %s;"
+        itemRowCountResult = execute_query(db_connection, itemRowCountQuery, data).fetchall();
+        print(itemRowCountResult);
+
+        return render("editOrders.html", rows=rowResult, itemRow=itemRowResult, itemRowCount=itemRowCountResult, custDD=customerDDResult, empDD=employeeDDResult, itemDD=itemDDResult)
 
     elif request.method == 'POST':
-        return "....but nothing happened"
-    #will finish this bit later ¯\_(ツ)_/¯
+        count = 1               # the count of Order Items
+        item_ids = []           # holds the name of the dropdown menu for each item in Order_Items
+        quantities = []         # holds the name of the quantity input for each item in Order_Items 
 
+        print("Adding a row Orders web page")
+        cust_id = request.form['cust_id']
+        emp_id = request.form['emp_id']
+        date = request.form['date']
+        credit_card_num = request.form['credit_card_num']
+        exp_date = request.form['exp_date']
+        credit_card_code = request.form['credit_card_code']
+
+        while(str(request.form.get('item_id_' + str(count))) != "None"):
+            item_ids.append(request.form.get("item_id_" + str(count)))          # add item_ids
+            quantities.append(request.form.get("quantity_" + str(count)))       # add quantities
+            count += 1
+
+        # update the order 
+        query = "UPDATE Orders SET cust_id = %s, emp_id = %s, date = %s, total = NULL, credit_card_num = %s, exp_date = %s, credit_card_code = %s WHERE Orders.order_id = %s;"
+        data = (cust_id, emp_id, date, credit_card_num, exp_date, credit_card_code, id)
+        result = execute_query(db_connection, query, data).fetchall();
+        print(result)
+        print("Order added.")
+
+        # insert the rows in Order_Items
+        query2 = "DELETE FROM Order_Items WHERE order_id = %s;"
+        data2 = (id,)
+        result2 = execute_query(db_connection, query2, data2).fetchall();
+        print(result2)
+        print("Order_Items rows deleted before inserting new rows.")
+        query3 = "INSERT INTO Order_Items (order_id, item_id, quantity) VALUES (%s, %s, %s);"
+        for item_id, quantity in zip(item_ids, quantities):
+            data3 = (id, item_id, quantity)
+            print("item_id is equal to: ", item_id, "and quantity is equal to: ", quantity)
+            result3 = execute_query(db_connection, query3, data3).fetchall();
+            print(result3)
+            print("A additional row was added to Order_Items.")
+           
+        # update total of the order
+        query4 = "UPDATE Orders SET total = (SELECT SUM(Items.price * Order_Items.quantity) FROM Order_Items INNER JOIN Items ON Order_Items.item_id = Items.item_id WHERE Order_Items.order_id = %s) WHERE Orders.order_id = %s;"
+        data4 = (id, id)
+        result4 = execute_query(db_connection, query4, data4).fetchall();
+        print(result4)
+        print("Order total added.")
+
+        # return to the Orders webpage
+        return redirect(url_for('Orders'))
+    
 @app.route('/deleteOrder/<int:id>')
 def deleteOrder(id):
     db_connection = connect_to_database()
@@ -297,7 +346,7 @@ def editCustomer(id):
         print(result)
         print("Customer edited.")
 
-        #return to the Items web page
+        # return to the Customers web page
         return redirect(url_for('Customers'))
 
 @app.route('/deleteCust/<int:id>')
@@ -364,7 +413,7 @@ def editEmp(id):
         print(result)
         print("Employee edited.")
 
-        #return to the Items web page
+        # return to the Employees web page
         return redirect(url_for('Employees'))
 
 @app.route('/deleteEmp/<int:id>')

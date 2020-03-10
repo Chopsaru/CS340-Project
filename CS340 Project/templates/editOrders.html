@@ -22,7 +22,7 @@
             <div class="form-row">
                 <div class="col">
                     <label for="custSelect">Customer</label>
-                    <select class="form-control" name="order_id" id="custSelect" required>
+                    <select class="form-control" name="cust_id" id="custSelect" required>
                         {% for c in custDD %}
                             {% if r.1 == c.0 %}
                                 <option selected value="{{c.0}}">{{c.1}}</option>
@@ -75,7 +75,7 @@
             <div class="form-row">
                 <div class="input-group">
                     <div class="col-md-10">
-                        <select class="form-control" name="item_id{{q.1}}" id="itemSelect" required>
+                        <select class="form-control" name="item_id_{{q.3}}" id="itemSelect" required>
                             <option disabled hidden>Select item</option>
                             {% for i in itemDD %}
                                 {% if q.1 == i.0 %}
@@ -87,7 +87,7 @@
                         </select>
                     </div>
                     <div class="col-md-2">
-                        <input type="number" class="form-control" name="quantity" id="quantityInput" value="{{q.2}}" required>
+                        <input type="number" class="form-control" name="quantity_{{q.3}}" id="quantityInput" value="{{q.2}}" required>
                     </div>
                 </div>
             </div>
@@ -101,7 +101,9 @@
     </div>
 
     <script>
-    var count = 1;
+    {% for iCount in itemRowCount %}
+    var count = {{ iCount.0}} + 1;
+    {% endfor %}
     $("#addItemBtn").click(function (event) {
         event.preventDefault();
 
@@ -115,7 +117,7 @@
                 '<div class="input-group">' +
                     '<div class="col-md-10">' +
                         '<select class="form-control" name="item_id_' + count + '" id="itemSelect" required>' +
-                            '<option selected disabled hidden>Select item</option>' +
+                            '<option selected disabled>Select item</option>' +
                             '{% for i in itemDD %}' +
                             '<option value="{{i.0}}">{{i.1}}, {{i.2}}</option>' +
                             '{% endfor %}' +
