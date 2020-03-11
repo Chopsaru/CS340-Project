@@ -44,6 +44,8 @@
     <Content Include="templates\menu.html" />
     <Content Include="templates\Items.html" />
     <Content Include="templates\Orders.html" />
+    <Content Include="templates\Orders no AJAX.html" />
+    <Content Include="templates\Orders json conversion.html" />
     <Content Include="templates\Customers.html" />
     <Content Include="templates\Employees.html" />
     <Content Include="templates\editEmployees.html" />

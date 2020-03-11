@@ -81,7 +81,7 @@
     </thead>
     <tbody>
         {% for r in rows %}
-        <tr data-child-value="{{r.0}}, {{itemRow}}">
+        <tr>
             <td class="details-control"></td>
             <td>{{r.0}}</td>
             <td>{{r[1]}}</td>
@@ -117,18 +117,21 @@
 </table>
 
 <script>
+    var orderId = '{{ rows.0 }}';
+    var d = '{{ itemRow }}';
+    print(orderId);
+    print(d);
+
         /* Formatting function for row details - modify as you need */
-    function format (id, items) {
+    function format ( d ) {
         // `d` is the original data object for the row
-        console.log(id)
-        console.log(items)
         var itemTable;
-        for (i = 0; i < items.length; i++) {
-            if (id == items[0]) {
+        for (i = 0; i < d.length; i++) {
+            if (orderId == d[0]) {
                 itemTable = '<tr>' +
-                    '<td>' + items[2] + '</td>' +
-                    '<td>' + items[1] + '</td>' +
-                    '<td>' + items[3] + '</td>' +
+                    '<td>' + d[2] + '</td>' +
+                    '<td>' + d[1] + '</td>' +
+                    '<td>' + d[3] + '</td>' +
                     '</tr>';
                 }
         }
