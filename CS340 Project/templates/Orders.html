@@ -1,6 +1,7 @@
 ﻿{% extends "menu.html" %}
 {% block content %}
 
+
 <div class="orders">
     <h1>Order Management</h1>
 </div>
@@ -66,7 +67,6 @@
 <table id="ordersTable" class="table table-bordered table-sm">
     <thead>
         <tr>
-            <th></th>
             <th class="th-sm" scope="col">Order id</th>
             <th class="th-sm" scope="col">Customer</th>
             <th class="th-sm" scope="col">Employee</th>
@@ -81,7 +81,7 @@
     </thead>
     <tbody>
         {% for r in rows %}
-        <tr data-child-value="{{r.0}}, {{itemRow}}">
+        <tr>
             <td class="details-control"></td>
             <td>{{r.0}}</td>
             <td>{{r[1]}}</td>
@@ -94,22 +94,18 @@
             <td class="rowBtn"><button class="btn btn-primary" type="submit" onclick="window.location='/Orders/edit/{{r.0}}'">Edit</button></td>
             <td><button class="rowBtn, btn btn-danger" type="submit" onclick="window.location='/deleteOrder/{{r.0}}'">Delete</button></td>
         </tr>
-        <!--
-     <tr>
-         <td></td>
-         <td colspan="4">
-             <div id="items_{{r.0}}" style="display: none;">
-                 {% for items in itemRow %}
-                 {% if r.0 == items.0 %}
-                 <br>{{items[2]}}x,&nbsp
-                 {{items[1]}},&nbsp
-                 {{items[3]}}
-                 {% endif %}
-                 {% endfor %}
-             </div>
-         </td>
-     </tr>
-        -->
+        <tr colspan="11" style="display:none;" id="items_{{r.0}}">
+            <tr>
+                {% for items in itemRow %}
+                {% if r.0 == items.0 %}
+                <td>{{items[2]}}x</td>
+                <td>{{items[1]}}</td>
+                <td>{{items[3]}}</td>
+                {% endif %}
+                {% endfor %}
+            </tr>
+        </tr>
+
         {% endfor %}
 
     </tbody>
@@ -117,56 +113,28 @@
 </table>
 
 <script>
-        /* Formatting function for row details - modify as you need */
-    function format (id, items) {
-        // `d` is the original data object for the row
-        console.log(id)
-        console.log(items)
-        var itemTable;
-        for (i = 0; i < items.length; i++) {
-            if (id == items[0]) {
-                itemTable = '<tr>' +
-                    '<td>' + items[2] + '</td>' +
-                    '<td>' + items[1] + '</td>' +
-                    '<td>' + items[3] + '</td>' +
-                    '</tr>';
-                }
-        }
-        return '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">'+
-            '<tr>'+
-                '<td>Quantity:</td>' +
-                '<td>Name: </td>' +
-                '<td>Price:</td>'+
-            '</tr>'+
-            itemTable +
-            '<tr>'+
-            '</tr>'+
-        '</table>';
-    }
-
-    $(document).ready(function() {
-        var table = $('#ordersTable').DataTable( {
-        } );
+    $(document).ready(function () {
+        var table = $('#ordersTable').DataTable({
+        });
 
         // Add event listener for opening and closing details
         $('#ordersTable tbody').on('click', 'td.details-control', function () {
             var tr = $(this).closest('tr');
-            var row = table.row( tr );
+            var row = table.row(tr);
 
-            if ( row.child.isShown() ) {
+            if (row.child.isShown()) {
                 // This row is already open - close it
                 row.child.hide();
                 tr.removeClass('shown');
             }
             else {
                 // Open this row
-                row.child( format(row.data()) ).show();
+                row.child(format(row.data())).show();
                 tr.addClass('shown');
             }
-        } );
-    } );
+        });
+    });
 </script>
-
 
 <script>
     var count = 1;
@@ -183,7 +151,7 @@
                 '<div class="input-group">' +
                     '<div class="col-md-10">' +
                         '<select class="form-control" name="item_id_' + count + '" id="itemSelect" required>' +
-                            '<option selected disabled hidden>Select item</option>' +
+                            '<option selected disabled>Select item</option>' +
                             '{% for i in itemDD %}' +
                             '<option value="{{i.0}}">{{i.1}}, {{i.2}}</option>' +
                             '{% endfor %}' +
@@ -198,5 +166,12 @@
     }
 </script>
 
-
+<!--
+<script>
+    $("a[id^=show_]").click(function (event) {
+        $("#items_" + $(this).attr('id').substr(5)).slideToggle("slow");
+        event.preventDefault();
+    })
+</script>
+    -->
 {% endblock %}
