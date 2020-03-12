@@ -72,13 +72,21 @@ tr .rowBtn {
     width: 70px;
 }
 
-h3 {
-    font-size: 27px;
+h2 {
+    font-size: 40px;
     font-weight: 100;
     margin-top: 30px;
     text-align: center;
     letter-spacing: -1px;
     color: #999;
+}
+
+dt {
+    text-align: left;
+}
+
+dd {
+    text-align: left;
 }
 
 .menu {
