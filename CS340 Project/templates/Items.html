@@ -17,11 +17,11 @@ $(document).ready(function() {
 
         <div class="col mb-3">
             <label for="validationDefault02">Price</label>
-            <input type="number" name="price" class="form-control" id="validationDefault02" value="10.00" step=".01" required>
+            <input type="number" name="price" class="form-control" id="validationDefault02" value="10.00" step=".01" min="0.01" required>
         </div>
         <div class="col mb-3">
             <label for="validationDefault03">Quantity available</label>
-            <input type="number" name="quantity_available" class="form-control" id="validationDefault03" value="10" required>
+            <input type="number" name="quantity_available" class="form-control" id="validationDefault03" value="10" min="1" required>
         </div>
     </div>
     <div class="form-row">

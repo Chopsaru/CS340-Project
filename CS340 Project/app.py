@@ -116,11 +116,7 @@ def Orders():
         itemDDResult = execute_query(db_connection, itemDDQuery).fetchall();
         print(itemDDResult)
 
-        itemRowQuery = "SELECT Orders.order_id, Items.item_name, Order_Items.quantity, Items.price * Order_Items.quantity AS item_total FROM Orders LEFT JOIN Order_Items ON Orders.order_id = Order_Items.order_id LEFT JOIN Items ON Order_Items.item_id = Items.item_id;"
-        itemRowResult = execute_query(db_connection, itemRowQuery).fetchall();
-        print(itemRowResult);
-
-        return render("Orders.html", rows=rowResult, itemRow=itemRowResult, custDD=customerDDResult, empDD=employeeDDResult, itemDD=itemDDResult)
+        return render("Orders.html", rows=rowResult, custDD=customerDDResult, empDD=employeeDDResult, itemDD=itemDDResult)
 
     elif request.method == 'POST':          # add an order
         count = 1               # the count of Order Items
@@ -192,7 +188,7 @@ def Orders():
         itemRowResult = execute_query(db_connection, itemRowQuery).fetchall();
         print(itemRowResult);
 
-        return render("Orders.html", rows=rowResult, itemRow=itemRowResult, custDD=customerDDResult, empDD=employeeDDResult, itemDD=itemDDResult)
+        return render("Orders.html", rows=rowResult, custDD=customerDDResult, empDD=employeeDDResult, itemDD=itemDDResult)
 
 @app.route('/Orders/edit/<int:id>', methods=['POST', 'GET'])
 def editOrder(id):
@@ -226,7 +222,7 @@ def editOrder(id):
         itemRowCountResult = execute_query(db_connection, itemRowCountQuery, data).fetchall();
         print(itemRowCountResult);
 
-        return render("editOrders.html", rows=rowResult, itemRow=itemRowResult, itemRowCount=itemRowCountResult, custDD=customerDDResult, empDD=employeeDDResult, itemDD=itemDDResult)
+        return render("editOrders.html", rows=rowResult, itemRowCount=itemRowCountResult, custDD=customerDDResult, empDD=employeeDDResult, itemDD=itemDDResult)
 
     elif request.method == 'POST':
         count = 1               # the count of Order Items
@@ -290,6 +286,37 @@ def deleteOrder(id):
     execute_query(db_connection, 'SET FOREIGN_KEY_CHECKS=1;')
     print(str(result.rowcount) + "row deleted")
     return redirect(url_for('Orders'))
+
+@app.route('/Orders/edit/<int:id>/items')
+def editOrder_Items(id):
+    db_connection = connect_to_database()
+    data = (id, )
+    
+    itemRowQuery = "SELECT Orders.order_id, Items.item_id, Items.item_name, Order_Items.quantity, Items.price * Order_Items.quantity AS item_total FROM Orders LEFT JOIN Order_Items ON Orders.order_id = Order_Items.order_id LEFT JOIN Items ON Order_Items.item_id = Items.item_id WHERE Orders.order_id = %s"
+    itemRowResult = execute_query(db_connection, itemRowQuery, data).fetchall();
+    print(itemRowResult);
+
+    return render('Order_Items.html', rows=itemRowResult)
+
+@app.route('/Orders/edit/<int:orderId>/items/delete<int:itemId>')
+def deleteOrder_Items(orderId, itemId):
+    db_connection = connect_to_database()
+    
+    #deleting item from order
+    itemRowQuery = "DELETE FROM Order_Items WHERE order_id = %s AND item_id = %s;"
+    data = (orderId, itemId, )
+    itemRowResult = execute_query(db_connection, itemRowQuery, data).fetchall();
+    print(itemRowResult);
+
+    #update total
+    updateQuery = "UPDATE Orders SET total = (SELECT SUM(Items.price * Order_Items.quantity) FROM Order_Items INNER JOIN Items ON Order_Items.item_id = Items.item_id WHERE Order_Items.order_id = (SELECT Orders.order_id FROM Orders ORDER BY Orders.order_id DESC LIMIT 1)) WHERE Orders.order_id = (SELECT Orders.order_id FROM Orders ORDER BY Orders.order_id DESC LIMIT 1);"
+    updateResult = execute_query(db_connection, updateQuery).fetchall();
+    print(updateResult)
+    print("Order total added.")
+
+    return redirect(url_for('editOrder_Items', id=orderId))
+
+
 
 #=========================================================
 # Customers routes

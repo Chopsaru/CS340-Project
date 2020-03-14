@@ -1,39 +1,26 @@
-﻿<!DOCTYPE html>
+﻿{% extends "menu.html" %}
+{% block content %}
+<div class="container">
+    {%for r in rows %}
 
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
-<head>
-    <meta charset="utf-8" />
-    <title>Board Game Inc.</title>
-    <script type="text/javascript" src="{{ url_for('static', filename='jquery-3.4.1.min.js') }}"></script>
-    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.bundle.min.js') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css" />
-    <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
-</head>
-<body>
-    <div class="container">
-        {%for r in rows %}
-
-        <div class="employees">
-            <h1>Edit Employee</h1>
-        </div>
-
-        <form id="edit-employee" action="/Employees/edit/{{r.0}}" method="POST">
-            <div class="form-row">
-                <div class="col mb-3">
-                    <label for="validationDefault01">First name</label>
-                    <input type="text" name="first_name" class="form-control" id="validationDefault01" value="{{r[1]}}" required>
-                </div>
-                <div class="col mb-3">
-                    <label for="validationDefault02">Last name</label>
-                    <input type="text" name="last_name" class="form-control" id="validationDefault02" value="{{r[2]}}" required>
-                </div>
-            </div>
-        </form>
-        <button class="btn btn-success" type="submit" form="edit-employee">Submit Changes</button>
-        <button class="btn btn-danger" onclick="window.location='/Employees'">Cancel</button>
-        {% endfor %}
+    <div class="employees">
+        <h1>Edit Employee</h1>
     </div>
-</body>
-</html>
+
+    <form id="edit-employee" action="/Employees/edit/{{r.0}}" method="POST">
+        <div class="form-row">
+            <div class="col mb-3">
+                <label for="validationDefault01">First name</label>
+                <input type="text" name="first_name" class="form-control" id="validationDefault01" value="{{r[1]}}" required>
+            </div>
+            <div class="col mb-3">
+                <label for="validationDefault02">Last name</label>
+                <input type="text" name="last_name" class="form-control" id="validationDefault02" value="{{r[2]}}" required>
+            </div>
+        </div>
+    </form>
+    <button class="btn btn-success" type="submit" form="edit-employee">Submit Changes</button>
+    <button class="btn btn-danger" onclick="window.location='/Employees'">Cancel</button>
+    {% endfor %}
+</div>
+{% endblock %}

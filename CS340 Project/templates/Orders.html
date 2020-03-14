@@ -59,7 +59,7 @@ $(document).ready(function() {
             </div>
             <div class="col-md-2">
                 <label for="quantityInput">Quantity</label>
-                <input type="number" class="form-control" name="quantity" id="quantityInput" required>
+                <input type="number" class="form-control" name="quantity" id="quantityInput" min="1" required>
             </div>
         </div>
     </div>
@@ -95,26 +95,10 @@ $(document).ready(function() {
             <td>{{r[5]}}</td>
             <td>{{r[6]}}</td>
             <td>{{r[7]}}</td>
-            <td><a href="#" id="show_{{r.0}}">Show Items</a></td>
+            <td class="rowBtn"><button class="btn btn-primary" type="submit" onclick="window.location='/Orders/edit/{{r.0}}/items'">Items</button></td>
             <td class="rowBtn"><button class="btn btn-primary" type="submit" onclick="window.location='/Orders/edit/{{r.0}}'">Edit</button></td>
             <td><button class="rowBtn, btn btn-danger" type="submit" onclick="window.location='/deleteOrder/{{r.0}}'">Delete</button></td>
         </tr>
-        
-        <tr>
-            <td></td>
-            <td colspan="4">
-                <div id="items_{{r.0}}" style="display: none;">
-                    {% for items in itemRow %}
-                    {% if r.0 == items.0 %}
-                    <br>{{items[2]}}x,&nbsp
-                    {{items[1]}},&nbsp
-                    {{items[3]}}
-                    {% endif %}
-                    {% endfor %}
-                </div>
-            </td>
-        </tr>
-
         {% endfor %}
 
     </tbody>
@@ -149,12 +133,5 @@ $(document).ready(function() {
             '</div>';
         return newrow;
     }
-</script>
-
-<script>
-    $("a[id^=show_]").click(function(event) {
-        $("#items_" + $(this).attr('id').substr(5)).slideToggle("slow");
-        event.preventDefault();
-    })
 </script>
 {% endblock %}

@@ -60,10 +60,11 @@ SELECT CONCAT(Employees.first_name,' ',Employees.last_name) FROM Employees
 SELECT Items.item_name, Items.price Items.quantity_available FROM Items
 
 -- queries for displaying Order_Items under each order in the Orders table
-SELECT Orders.order_id, Items.item_name, Order_Items.quantity, Items.price * Order_Items.quantity AS item_total
+SELECT Orders.order_id, Items.item_id, Items.item_name, Order_Items.quantity, Items.price * Order_Items.quantity AS item_total
 FROM Orders
 LEFT JOIN Order_Items ON Orders.order_id = Order_Items.order_id
 LEFT JOIN Items ON Order_Items.item_id = Items.item_id
+WHERE Orders.order_id = :order_id
 
 -- query for adding a new order
 INSERT INTO Orders (cust_id, emp_id, date, total, credit_card_num, exp_date, credit_card_code)

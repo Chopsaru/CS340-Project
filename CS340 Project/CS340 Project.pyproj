@@ -48,6 +48,7 @@
     <Content Include="templates\Employees.html" />
     <Content Include="templates\editEmployees.html" />
     <Content Include="templates\editItem.html" />
+    <Content Include="templates\Order_Items.html" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="db_connector\" />
