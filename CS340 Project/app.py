@@ -3,12 +3,13 @@ This script runs the application using a development server.
 It contains the definition of routes and views for the application.
 """
 
-from flask import Flask, request, redirect, url_for
+from flask import Flask, request, redirect, url_for, flash
 from flask import render_template as render
 from db_connector.db_connector import connect_to_database, execute_query
 from jinja2 import Template
 import itertools
 app = Flask(__name__)
+app.secret_key = "its a secret to everyone"
 
 # Make the WSGI interface available at the top level so wfastcgi can get it.
 wsgi_app = app.wsgi_app
@@ -80,13 +81,17 @@ def editItem(id):
 
 @app.route('/deleteItem/<int:id>')
 def deleteItem(id):
-    db_connection = connect_to_database()
-    query = "DELETE FROM Items WHERE item_id = %s"
-    data = (id,)
+    try:
+        db_connection = connect_to_database()
+        query = "DELETE FROM Items WHERE item_id = %s"
+        data = (id,)
 
-    result = execute_query(db_connection, query, data)
-    print(str(result.rowcount) + "row deleted")
-    return redirect(url_for('Items'))
+        result = execute_query(db_connection, query, data)
+        print(str(result.rowcount) + "row deleted")
+        return redirect(url_for('Items'))
+    except:
+        flash("Cannot delete items associated with an order.")
+        return redirect(url_for('Items'))
 
 #=========================================================
 # Orders routes
@@ -444,16 +449,17 @@ def editEmp(id):
 
 @app.route('/deleteEmp/<int:id>')
 def deleteEmp(id):
-    db_connection = connect_to_database()
-    query = "DELETE FROM Employees WHERE emp_id = %s"
-    data = (id,)
+        db_connection = connect_to_database()
+        query = "DELETE FROM Employees WHERE emp_id = %s"
+        data = (id,)
 
-    execute_query(db_connection, 'SET FOREIGN_KEY_CHECKS=0;')
-    result = execute_query(db_connection, query, data)
-    execute_query(db_connection, 'SET FOREIGN_KEY_CHECKS=1;')
-    print(str(result.rowcount) + "row deleted")
-    return redirect(url_for('Employees'))
-
+        execute_query(db_connection, 'SET FOREIGN_KEY_CHECKS=0;')
+        result = execute_query(db_connection, query, data)
+        execute_query(db_connection, 'SET FOREIGN_KEY_CHECKS=1;')
+        print(str(result.rowcount) + "row deleted")
+        return redirect(url_for('Employees'))
+    
+    
 
 if __name__ == '__main__':
     import os
