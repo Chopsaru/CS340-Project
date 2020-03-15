@@ -1,6 +1,5 @@
 ﻿{% extends "menu.html" %}
 {% block content %}
-<div class="container">
     <div class="orders">
         <h1>Edit Order</h1>
     </div>
@@ -64,13 +63,13 @@
             <div class="input-group">
                 <div class="col-md-10">
                     <select class="form-control" name="item_id_{{q.3}}" id="itemSelect" required>
-                        <option disabled hidden>Select item</option>
+                            <option disabled hidden>Select item</option>
                         {% for i in itemDD %}
-                        {% if q.1 == i.0 %}
-                        <option selected value="{{i.0}}">{{i.1}}, {{i.2}}</option>
-                        {% else %}
-                        <option value="{{i.0}}">{{i.1}}, {{i.2}}</option>
-                        {% endif %}
+                            {% if q.1 == i.0 %}
+                                <option selected value="{{i.0}}">{{i.1}}, {{i.2}}</option>
+                            {% else %}
+                                <option value="{{i.0}}">{{i.1}}, {{i.2}}</option>
+                            {% endif %}
                         {% endfor %}
                     </select>
                 </div>
@@ -86,7 +85,6 @@
     <br>
     <button class="btn btn-success mt-3 mb-3 mr-2" type="submit" form="edit-order">Submit Changes</button>
     <button class="btn btn-danger mt-3 mb-3" onclick="window.location='/Orders'">Cancel</button>
-</div>
 
 <script>
     {% for iCount in itemRowCount %}

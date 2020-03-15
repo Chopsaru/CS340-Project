@@ -220,7 +220,7 @@ def editOrder(id):
         itemRowCountResult = execute_query(db_connection, itemRowCountQuery, data).fetchall();
         print(itemRowCountResult);
 
-        return render("editOrders.html", rows=rowResult, itemRowCount=itemRowCountResult, custDD=customerDDResult, empDD=employeeDDResult, itemDD=itemDDResult)
+        return render("editOrders.html", rows=rowResult, itemRow=itemRowResult, itemRowCount=itemRowCountResult, custDD=customerDDResult, empDD=employeeDDResult, itemDD=itemDDResult)
 
     elif request.method == 'POST':
         count = 1               # the count of Order Items
