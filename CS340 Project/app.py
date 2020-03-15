@@ -84,9 +84,7 @@ def deleteItem(id):
     query = "DELETE FROM Items WHERE item_id = %s"
     data = (id,)
 
-    execute_query(db_connection, 'SET FOREIGN_KEY_CHECKS=0;')
     result = execute_query(db_connection, query, data)
-    execute_query(db_connection, 'SET FOREIGN_KEY_CHECKS=1;')
     print(str(result.rowcount) + "row deleted")
     return redirect(url_for('Items'))
 
@@ -309,8 +307,9 @@ def deleteOrder_Items(orderId, itemId):
     print(itemRowResult);
 
     #update total
-    updateQuery = "UPDATE Orders SET total = (SELECT SUM(Items.price * Order_Items.quantity) FROM Order_Items INNER JOIN Items ON Order_Items.item_id = Items.item_id WHERE Order_Items.order_id = (SELECT Orders.order_id FROM Orders ORDER BY Orders.order_id DESC LIMIT 1)) WHERE Orders.order_id = (SELECT Orders.order_id FROM Orders ORDER BY Orders.order_id DESC LIMIT 1);"
-    updateResult = execute_query(db_connection, updateQuery).fetchall();
+    updateQuery = "UPDATE Orders SET total = (SELECT SUM(Items.price * Order_Items.quantity) FROM Order_Items INNER JOIN Items ON Order_Items.item_id = Items.item_id WHERE Order_Items.order_id = %s) WHERE Orders.order_id = %s;"
+    data = (orderId, orderId)
+    updateResult = execute_query(db_connection, updateQuery, data).fetchall();
     print(updateResult)
     print("Order total added.")
 
