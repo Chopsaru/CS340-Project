@@ -467,16 +467,17 @@ def editEmp(id):
 
 @app.route('/deleteEmp/<int:id>')
 def deleteEmp(id):
-    db_connection = connect_to_database()
-    query = "DELETE FROM Employees WHERE emp_id = %s"
-    data = (id,)
+        db_connection = connect_to_database()
+        query = "DELETE FROM Employees WHERE emp_id = %s"
+        data = (id,)
 
-    execute_query(db_connection, 'SET FOREIGN_KEY_CHECKS=0;')
-    result = execute_query(db_connection, query, data)
-    execute_query(db_connection, 'SET FOREIGN_KEY_CHECKS=1;')
-    print(str(result.rowcount) + "row deleted")
-    return redirect(url_for('Employees'))
-
+        execute_query(db_connection, 'SET FOREIGN_KEY_CHECKS=0;')
+        result = execute_query(db_connection, query, data)
+        execute_query(db_connection, 'SET FOREIGN_KEY_CHECKS=1;')
+        print(str(result.rowcount) + "row deleted")
+        return redirect(url_for('Employees'))
+    
+    
 
 if __name__ == '__main__':
     import os
