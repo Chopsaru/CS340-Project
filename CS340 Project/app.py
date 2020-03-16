@@ -3,12 +3,13 @@ This script runs the application using a development server.
 It contains the definition of routes and views for the application.
 """
 
-from flask import Flask, request, redirect, url_for
+from flask import Flask, request, redirect, url_for, flash
 from flask import render_template as render
 from db_connector.db_connector import connect_to_database, execute_query
 from jinja2 import Template
 import itertools
 app = Flask(__name__)
+app.secret_key = "its a secret to everyone"
 
 # Make the WSGI interface available at the top level so wfastcgi can get it.
 wsgi_app = app.wsgi_app
@@ -46,11 +47,7 @@ def Items():
         print("Item added.")
 
         # render the web page again after adding an item
-        print("Fetching and rendering Items web page")
-        query2 = "SELECT * from Items;"
-        result2 = execute_query(db_connection, query2).fetchall();
-        print(result2)
-        return render("Items.html", rows=result2)
+        return redirect(url_for('Items'))
 
 @app.route('/Items/edit/<int:id>', methods=['POST', 'GET'])
 def editItem(id):
@@ -80,13 +77,17 @@ def editItem(id):
 
 @app.route('/deleteItem/<int:id>')
 def deleteItem(id):
-    db_connection = connect_to_database()
-    query = "DELETE FROM Items WHERE item_id = %s"
-    data = (id,)
+    try:
+        db_connection = connect_to_database()
+        query = "DELETE FROM Items WHERE item_id = %s"
+        data = (id,)
 
-    result = execute_query(db_connection, query, data)
-    print(str(result.rowcount) + "row deleted")
-    return redirect(url_for('Items'))
+        result = execute_query(db_connection, query, data)
+        print(str(result.rowcount) + "row deleted")
+        return redirect(url_for('Items'))
+    except:
+        flash("Cannot delete items associated with an order.")
+        return redirect(url_for('Items'))
 
 #=========================================================
 # Orders routes
@@ -117,7 +118,7 @@ def Orders():
         return render("Orders.html", rows=rowResult, custDD=customerDDResult, empDD=employeeDDResult, itemDD=itemDDResult)
 
     elif request.method == 'POST':          # add an order
-        count = 1               # the count of Order Items
+        count = 0               # the count of Order Items
         item_ids = []           # holds the item_id of each item in Order_Items
         quantities = []         # holds the quantity of each item in Order_Items 
 
@@ -128,65 +129,53 @@ def Orders():
         credit_card_num = request.form['credit_card_num']
         exp_date = request.form['exp_date']
         credit_card_code = request.form['credit_card_code']
-        item_id = request.form['item_id']           # holds the first item_id
-        quantity = request.form['quantity']         # holds the first quantity
 
         while(str(request.form.get('item_id_' + str(count))) != "None"):
-            item_ids.append(request.form.get("item_id_" + str(count)))          # add remaining item_ids
-            quantities.append(request.form.get("quantity_" + str(count)))       # add remaining quantities
+            currentId = request.form.get("item_id_" + str(count))
+            currentQty = request.form.get("quantity_" + str(count))
+            print("currentQty is equal to ", currentQty, "!!!!!!!!!!")
+            if currentId != "" and int(currentQty) > 0:
+                item_ids.append(currentId)              # get the item_ids
+                quantities.append(currentQty)           # get the quantities
             count += 1
 
         # insert the order 
         query = "INSERT INTO Orders (cust_id, emp_id, date, total, credit_card_num, exp_date, credit_card_code) VALUES (%s, %s, %s, NULL, %s, %s, %s);"
+        queryNoCust = "INSERT INTO Orders (cust_id, emp_id, date, total, credit_card_num, exp_date, credit_card_code) VALUES (NULL, %s, %s, NULL, %s, %s, %s);"
+        queryNoEmp = "INSERT INTO Orders (cust_id, emp_id, date, total, credit_card_num, exp_date, credit_card_code) VALUES (%s, NULL, %s, NULL, %s, %s, %s);"
+        queryNoCustEmp = "INSERT INTO Orders (cust_id, emp_id, date, total, credit_card_num, exp_date, credit_card_code) VALUES (NULL, NULL, %s, NULL, %s, %s, %s);"
         query2 = "INSERT INTO Order_Items (order_id, item_id, quantity) VALUES ((SELECT Orders.order_id FROM Orders ORDER BY Orders.order_id DESC LIMIT 1), %s, %s);"
         data = (cust_id, emp_id, date, credit_card_num, exp_date, credit_card_code)
-        data2 = (item_id, quantity)
-        result = execute_query(db_connection, query, data).fetchall();
+        dataNoCust = (emp_id, date, credit_card_num, exp_date, credit_card_code)
+        dataNoEmp = (cust_id, date, credit_card_num, exp_date, credit_card_code)
+        dataNoCustEmp = (date, credit_card_num, exp_date, credit_card_code)
+        if cust_id == "" and emp_id == "":
+            result = execute_query(db_connection, queryNoCustEmp, dataNoCustEmp).fetchall();
+        elif cust_id == "":
+            result = execute_query(db_connection, queryNoCust, dataNoCust).fetchall();
+        elif emp_id == "":
+            result = execute_query(db_connection, queryNoEmp, dataNoEmp).fetchall();
+        else:
+            result = execute_query(db_connection, query, data).fetchall();
         print(result)
         print("Order added.")
 
-        # insert the first row in Order_Items
-        result2 = execute_query(db_connection, query2, data2).fetchall();
-        print(result2)
-        print("The first row was added to Order_Items.")
-
-        # insert the remaining rows in Order_Items
+        # insert the rows in Order_Items
         for item_id, quantity in zip(item_ids, quantities):
-            data3 = (item_id, quantity)
+            data2 = (item_id, quantity)
             print("item_id is equal to: ", item_id, "and quantity is equal to: ", quantity)
-            result3 = execute_query(db_connection, query2, data3).fetchall();
-            print(result3)
+            result2 = execute_query(db_connection, query2, data2).fetchall();
+            print(result2)
             print("A additional row was added to Order_Items.")
            
         # insert total into the order that was just added
         query3 = "UPDATE Orders SET total = (SELECT SUM(Items.price * Order_Items.quantity) FROM Order_Items INNER JOIN Items ON Order_Items.item_id = Items.item_id WHERE Order_Items.order_id = (SELECT Orders.order_id FROM Orders ORDER BY Orders.order_id DESC LIMIT 1)) WHERE Orders.order_id = (SELECT Orders.order_id FROM Orders ORDER BY Orders.order_id DESC LIMIT 1);"
-        result4 = execute_query(db_connection, query3).fetchall();
-        print(result4)
+        result3 = execute_query(db_connection, query3).fetchall();
+        print(result3)
         print("Order total added.")
 
         # render the web page again after adding an order and the order items
-        print("Fetching and rendering Items web page")
-        rowQuery = "SELECT order_id, CONCAT(Customers.first_name,' ',Customers.last_name) AS cust_name, CONCAT(Employees.first_name,' ',Employees.last_name) AS emp_name, date, total, credit_card_num, exp_date, credit_card_code FROM Orders LEFT JOIN Customers ON Orders.cust_id = Customers.cust_id LEFT JOIN Employees ON Orders.emp_id = Employees.emp_id;"
-        rowResult = execute_query(db_connection, rowQuery).fetchall();
-        print(rowResult)
-
-        customerDDQuery = "SELECT Customers.cust_id, CONCAT(Customers.first_name,' ',Customers.last_name) FROM Customers;"
-        customerDDResult = execute_query(db_connection, customerDDQuery).fetchall();
-        print(customerDDResult)
-
-        employeeDDQuery = "SELECT Employees.emp_id, CONCAT(Employees.first_name,' ',Employees.last_name) FROM Employees;"
-        employeeDDResult = execute_query(db_connection, employeeDDQuery).fetchall();
-        print(employeeDDResult)
-
-        itemDDQuery = "SELECT Items.item_id, Items.item_name, Items.price FROM Items;"
-        itemDDResult = execute_query(db_connection, itemDDQuery).fetchall();
-        print(itemDDResult)
-
-        itemRowQuery = "SELECT Orders.order_id, Items.item_name, Order_Items.quantity, Items.price * Order_Items.quantity AS item_total FROM Orders LEFT JOIN Order_Items ON Orders.order_id = Order_Items.order_id LEFT JOIN Items ON Order_Items.item_id = Items.item_id;"
-        itemRowResult = execute_query(db_connection, itemRowQuery).fetchall();
-        print(itemRowResult);
-
-        return render("Orders.html", rows=rowResult, custDD=customerDDResult, empDD=employeeDDResult, itemDD=itemDDResult)
+        return redirect(url_for('Orders'))
 
 @app.route('/Orders/edit/<int:id>', methods=['POST', 'GET'])
 def editOrder(id):
@@ -212,18 +201,18 @@ def editOrder(id):
         itemDDResult = execute_query(db_connection, itemDDQuery).fetchall();
         print(itemDDResult)
 
-        itemRowQuery = "SELECT Orders.order_id, Order_Items.item_id, Order_Items.quantity, (ROW_NUMBER() OVER(ORDER BY Order_Items.item_id)) AS rowNum FROM Orders LEFT JOIN Order_Items ON Orders.order_id = Order_Items.order_id LEFT JOIN Items ON Order_Items.item_id = Items.item_id WHERE Orders.order_id = %s;"
+        itemRowQuery = "SELECT Orders.order_id, Order_Items.item_id, Order_Items.quantity, ((ROW_NUMBER() OVER(ORDER BY Order_Items.item_id)) - 1) AS rowNum FROM Orders LEFT JOIN Order_Items ON Orders.order_id = Order_Items.order_id LEFT JOIN Items ON Order_Items.item_id = Items.item_id WHERE Orders.order_id = %s;"
         itemRowResult = execute_query(db_connection, itemRowQuery, data).fetchall();
         print(itemRowResult);
 
-        itemRowCountQuery = "SELECT COUNT(Order_Items.item_id) FROM Orders LEFT JOIN Order_Items ON Orders.order_id = Order_Items.order_id WHERE Orders.order_id = %s;"
+        itemRowCountQuery = "SELECT COUNT(Order_Items.item_id) FROM Order_Items WHERE Order_Items.order_id = %s;"
         itemRowCountResult = execute_query(db_connection, itemRowCountQuery, data).fetchall();
         print(itemRowCountResult);
 
         return render("editOrders.html", rows=rowResult, itemRow=itemRowResult, itemRowCount=itemRowCountResult, custDD=customerDDResult, empDD=employeeDDResult, itemDD=itemDDResult)
 
     elif request.method == 'POST':
-        count = 1               # the count of Order Items
+        count = 0               # the count of Order Items
         item_ids = []           # holds the name of the dropdown menu for each item in Order_Items
         quantities = []         # holds the name of the quantity input for each item in Order_Items 
 
@@ -236,14 +225,31 @@ def editOrder(id):
         credit_card_code = request.form['credit_card_code']
 
         while(str(request.form.get('item_id_' + str(count))) != "None"):
-            item_ids.append(request.form.get("item_id_" + str(count)))          # add item_ids
-            quantities.append(request.form.get("quantity_" + str(count)))       # add quantities
+            currentId = request.form.get("item_id_" + str(count))
+            currentQty = request.form.get("quantity_" + str(count))
+            print("currentQty is equal to ", currentQty, "!!!!!!!!!!")
+            if currentId != "" and int(currentQty) > 0:
+                item_ids.append(currentId)          # add item_ids
+                quantities.append(currentQty)       # add quantities
             count += 1
 
         # update the order 
         query = "UPDATE Orders SET cust_id = %s, emp_id = %s, date = %s, total = NULL, credit_card_num = %s, exp_date = %s, credit_card_code = %s WHERE Orders.order_id = %s;"
+        queryNoCust = "UPDATE Orders SET cust_id = NULL, emp_id = %s, date = %s, total = NULL, credit_card_num = %s, exp_date = %s, credit_card_code = %s WHERE Orders.order_id = %s;"
+        queryNoEmp = "UPDATE Orders SET cust_id = %s, emp_id = NULL, date = %s, total = NULL, credit_card_num = %s, exp_date = %s, credit_card_code = %s WHERE Orders.order_id = %s;"
+        queryNoCustEmp = "UPDATE Orders SET cust_id = NULL, emp_id = NULL, date = %s, total = NULL, credit_card_num = %s, exp_date = %s, credit_card_code = %s WHERE Orders.order_id = %s;"
         data = (cust_id, emp_id, date, credit_card_num, exp_date, credit_card_code, id)
-        result = execute_query(db_connection, query, data).fetchall();
+        dataNoCust = (emp_id, date, credit_card_num, exp_date, credit_card_code, id)
+        dataNoEmp = (cust_id, date, credit_card_num, exp_date, credit_card_code, id)
+        dataNoCustEmp = (date, credit_card_num, exp_date, credit_card_code, id)
+        if cust_id == "" and emp_id == "":
+            result = execute_query(db_connection, queryNoCustEmp, dataNoCustEmp).fetchall();
+        elif cust_id == "":
+            result = execute_query(db_connection, queryNoCust, dataNoCust).fetchall();
+        elif emp_id == "":
+            result = execute_query(db_connection, queryNoEmp, dataNoEmp).fetchall();
+        else:
+            result = execute_query(db_connection, query, data).fetchall();
         print(result)
         print("Order added.")
 
@@ -256,7 +262,7 @@ def editOrder(id):
         query3 = "INSERT INTO Order_Items (order_id, item_id, quantity) VALUES (%s, %s, %s);"
         for item_id, quantity in zip(item_ids, quantities):
             data3 = (id, item_id, quantity)
-            print("item_id is equal to: ", item_id, "and quantity is equal to: ", quantity)
+            print("id is equal to: ", id, "item_id is equal to: ", item_id, "and quantity is equal to: ", quantity)
             result3 = execute_query(db_connection, query3, data3).fetchall();
             print(result3)
             print("A additional row was added to Order_Items.")
@@ -343,11 +349,7 @@ def Customers():
         print("Customer added.")
 
         # render the web page again after adding a customer
-        print("Fetching and rendering Customers web page")
-        query2 = "SELECT * from Customers;"
-        result2 = execute_query(db_connection, query2).fetchall();
-        print(result2)
-        return render("Customers.html", rows=result2)
+        return redirect(url_for('Customers'))
 
 @app.route('/Customers/edit/<int:id>', methods=['POST', 'GET'])
 def editCustomer(id):
@@ -412,11 +414,7 @@ def Employees():
         print("Employee added.")
 
         # render the web page again after adding an employee
-        print("Fetching and rendering Employees web page")
-        query2 = "SELECT * from Employees;"
-        result2 = execute_query(db_connection, query2).fetchall();
-        print(result2)
-        return render("Employees.html", rows=result2)
+        return redirect(url_for('Employees'))
 
 @app.route('/Employees/edit/<int:id>', methods=['POST', 'GET'])
 def editEmp(id):

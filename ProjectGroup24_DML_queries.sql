@@ -87,7 +87,10 @@ DELETE FROM Orders WHERE order_id=:order_idINPUT_FROM_CHECKBOXES
 SELECT order_id, Customers.cust_id, Employees.emp_id, date, total, credit_card_num, exp_date, credit_card_code FROM Orders LEFT JOIN Customers ON Orders.cust_id = Customers.cust_id LEFT JOIN Employees ON Orders.emp_id = Employees.emp_id WHERE Orders.order_id = %s;
 
 -- query for displaying the order items in the Edit Orders page
-SELECT Orders.order_id, Order_Items.item_id, Order_Items.quantity FROM Orders LEFT JOIN Order_Items ON Orders.order_id = Order_Items.order_id LEFT JOIN Items ON Order_Items.item_id = Items.item_id WHERE Orders.order_id = %s;
+SELECT Orders.order_id, Order_Items.item_id, Order_Items.quantity, ((ROW_NUMBER() OVER(ORDER BY Order_Items.item_id)) - 1) AS rowNum FROM Orders LEFT JOIN Order_Items ON Orders.order_id = Order_Items.order_id LEFT JOIN Items ON Order_Items.item_id = Items.item_id WHERE Orders.order_id = %s;
+
+-- query for getting the number of order items to be displayed in the Edit Orders page
+SELECT COUNT(Order_Items.item_id) FROM Order_Items WHERE Order_Items.order_id = %s;
 
 -- query for editing an order
 UPDATE Orders SET cust_id=:cust_idINPUT_FROM_DROPDOWN, emp_id=:emp_idINPUT_FROM_DROPDOWN, date=:dateIn, credit_card_num=:credit_card_numIn,
@@ -100,7 +103,6 @@ INSERT INTO Order_Items (order_id, item_id, quantity) VALUES (%s, %s, %s);
 
 -- queries for getting the total of an order after updating the order
 UPDATE Orders SET total = (SELECT SUM(Items.price * Order_Items.quantity) FROM Order_Items INNER JOIN Items ON Order_Items.item_id = Items.item_id WHERE Order_Items.order_id = %s) WHERE Orders.order_id = %s;
-UPDATE Orders SET total = (SELECT SUM(Items.price * Order_Items.quantity) FROM Order_Items INNER JOIN Items ON Order_Items.item_id = Items.item_id WHERE Order_Items.order_id = (SELECT Orders.order_id FROM Orders ORDER BY Orders.order_id DESC LIMIT 1)) WHERE Orders.order_id = (SELECT Orders.order_id FROM Orders ORDER BY Orders.order_id DESC LIMIT 1);
 
 -- query for deleting order items
 DELETE FROM Order_Items WHERE order_id=:order_idINPUT_FROM_CLICK AND item_id=:item_idINPUT_FROM_CHECKBOXES
