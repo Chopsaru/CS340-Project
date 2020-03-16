@@ -133,7 +133,6 @@ def Orders():
         while(str(request.form.get('item_id_' + str(count))) != "None"):
             currentId = request.form.get("item_id_" + str(count))
             currentQty = request.form.get("quantity_" + str(count))
-            print("currentQty is equal to ", currentQty, "!!!!!!!!!!")
             if currentId != "" and int(currentQty) > 0:
                 item_ids.append(currentId)              # get the item_ids
                 quantities.append(currentQty)           # get the quantities
@@ -144,7 +143,6 @@ def Orders():
         queryNoCust = "INSERT INTO Orders (cust_id, emp_id, date, total, credit_card_num, exp_date, credit_card_code) VALUES (NULL, %s, %s, NULL, %s, %s, %s);"
         queryNoEmp = "INSERT INTO Orders (cust_id, emp_id, date, total, credit_card_num, exp_date, credit_card_code) VALUES (%s, NULL, %s, NULL, %s, %s, %s);"
         queryNoCustEmp = "INSERT INTO Orders (cust_id, emp_id, date, total, credit_card_num, exp_date, credit_card_code) VALUES (NULL, NULL, %s, NULL, %s, %s, %s);"
-        query2 = "INSERT INTO Order_Items (order_id, item_id, quantity) VALUES ((SELECT Orders.order_id FROM Orders ORDER BY Orders.order_id DESC LIMIT 1), %s, %s);"
         data = (cust_id, emp_id, date, credit_card_num, exp_date, credit_card_code)
         dataNoCust = (emp_id, date, credit_card_num, exp_date, credit_card_code)
         dataNoEmp = (cust_id, date, credit_card_num, exp_date, credit_card_code)
@@ -160,10 +158,18 @@ def Orders():
         print(result)
         print("Order added.")
 
-        # insert the rows in Order_Items
+        # check the quantity_available of each order item to be added and display error if not enough
+
+
+
+        # insert the rows in Order_Items and subtract the order items' quantities from the quantity_available
+        query2 = "INSERT INTO Order_Items (order_id, item_id, quantity) VALUES ((SELECT Orders.order_id FROM Orders ORDER BY Orders.order_id DESC LIMIT 1), %s, %s);"
+        query4 = "UPDATE Items SET quantity_available = ((SELECT quantity_available FROM Items WHERE item_id = %s) - %s) WHERE item_id = %s;"
         for item_id, quantity in zip(item_ids, quantities):
+            data4 = (item_id, quantity, item_id)
+            result4 = execute_query(db_connection, query4, data4).fetchall();
+            print(result4)
             data2 = (item_id, quantity)
-            print("item_id is equal to: ", item_id, "and quantity is equal to: ", quantity)
             result2 = execute_query(db_connection, query2, data2).fetchall();
             print(result2)
             print("A additional row was added to Order_Items.")
@@ -253,16 +259,35 @@ def editOrder(id):
         print(result)
         print("Order added.")
 
-        # insert the rows in Order_Items
+        # check the quantity_available of each order item to be added and display error if not enough
+
+
+        # add the quantities back to quantity_available for the original Order_Items
+        query7 = "SELECT item_id FROM Order_Items WHERE Order_Items.order_id = %s;"
+        data7 = (id,)
+        old_item_ids = execute_query(db_connection, query7, data7).fetchall();
+        print("old_item_ids is equal to this: ", old_item_ids)
+        for old_item_id in old_item_ids:
+            query6 = "UPDATE Items SET quantity_available = ((SELECT quantity_available FROM Items WHERE item_id = %s) + (SELECT quantity FROM Order_Items WHERE Order_Items.order_id = %s AND Order_Items.item_id = %s)) WHERE item_id = %s;"
+            data6 = (old_item_id, id, old_item_id, old_item_id)
+            result6 = execute_query(db_connection, query6, data6).fetchall();
+            print(result6)
+
+        # delete the original Order_Items
         query2 = "DELETE FROM Order_Items WHERE order_id = %s;"
         data2 = (id,)
         result2 = execute_query(db_connection, query2, data2).fetchall();
         print(result2)
         print("Order_Items rows deleted before inserting new rows.")
+
+        # insert the rows in Order_Items and subtract the order items' quantities from the quantity_available
         query3 = "INSERT INTO Order_Items (order_id, item_id, quantity) VALUES (%s, %s, %s);"
+        query5 = "UPDATE Items SET quantity_available = ((SELECT quantity_available FROM Items WHERE item_id = %s) - %s) WHERE item_id = %s;"
         for item_id, quantity in zip(item_ids, quantities):
+            data5 = (item_id, quantity, item_id)
+            result5 = execute_query(db_connection, query5, data5).fetchall();
+            print(result5)
             data3 = (id, item_id, quantity)
-            print("id is equal to: ", id, "item_id is equal to: ", item_id, "and quantity is equal to: ", quantity)
             result3 = execute_query(db_connection, query3, data3).fetchall();
             print(result3)
             print("A additional row was added to Order_Items.")

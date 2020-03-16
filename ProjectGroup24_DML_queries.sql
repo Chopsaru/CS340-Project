@@ -3,7 +3,7 @@
 -- Class: CS340-401
 -- Assignment: Step 4 Draft DML Queries
 
--- Variables are denoted by :
+-- Variables are denoted by : or %s
 -- Input from a textbox is denoted by In
 -- Input from a dropdown menu is denoted by INPUT_FROM_DROPDOWN
 -- Input from clicking a button is denoted by INPUT_FROM_CLICK
@@ -74,6 +74,9 @@ INSERT INTO Orders (cust_id, emp_id, date, total, credit_card_num, exp_date, cre
 INSERT INTO Order_Items (order_id, item_id, quantity)
 	VALUES ((SELECT Orders.order_id FROM Orders ORDER BY Orders.order_id DESC LIMIT 1), :item_idINPUT_FROM_DROPDOWN, :quantityIn)
 
+-- query for updating the quantity_available for Items related to the Order_Items just added
+UPDATE Items SET quantity_available = ((SELECT quantity_available FROM Items WHERE item_id = %s) - %s) WHERE item_id = %s;
+
 -- query for getting the total of an order
 UPDATE Orders SET total = (SELECT SUM(Items.price * Order_Items.quantity) FROM Order_Items INNER JOIN Items ON Order_Items.item_id = Items.item_id WHERE Order_Items.order_id = (SELECT Orders.order_id FROM Orders ORDER BY Orders.order_id DESC LIMIT 1)) WHERE Orders.order_id = (SELECT Orders.order_id FROM Orders ORDER BY Orders.order_id DESC LIMIT 1)
 
@@ -97,9 +100,18 @@ UPDATE Orders SET cust_id=:cust_idINPUT_FROM_DROPDOWN, emp_id=:emp_idINPUT_FROM_
 	exp_date=:exp_dateIn, credit_card_code=:credit_card_codeIn
 WHERE order_id=:order_idINPUT_FROM_CLICK
 
--- query for editing order items
+
+-- queries for editing order items
+-- gets the item_ids from an order
+SELECT item_id FROM Order_Items WHERE Order_Items.order_id = %s;
+-- sets quantity_available back to its orginal value for an item
+UPDATE Items SET quantity_available = ((SELECT quantity_available FROM Items WHERE item_id = %s) + (SELECT quantity FROM Order_Items WHERE Order_Items.order_id = %s AND Order_Items.item_id = %s)) WHERE item_id = %s;
+-- deletes original Order_Items
 DELETE FROM Order_Items WHERE order_id = %s;
+-- insert rows for new Order_Items
 INSERT INTO Order_Items (order_id, item_id, quantity) VALUES (%s, %s, %s);
+-- update quantity_available for Items related to the Order_Items newly added
+UPDATE Items SET quantity_available = ((SELECT quantity_available FROM Items WHERE item_id = %s) - %s) WHERE item_id = %s;
 
 -- queries for getting the total of an order after updating the order
 UPDATE Orders SET total = (SELECT SUM(Items.price * Order_Items.quantity) FROM Order_Items INNER JOIN Items ON Order_Items.item_id = Items.item_id WHERE Order_Items.order_id = %s) WHERE Orders.order_id = %s;
