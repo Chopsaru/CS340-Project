@@ -66,6 +66,9 @@ LEFT JOIN Order_Items ON Orders.order_id = Order_Items.order_id
 LEFT JOIN Items ON Order_Items.item_id = Items.item_id
 WHERE Orders.order_id = :order_id
 
+-- query for getting the quantity_available of an item for checking whether enough items are available for an order
+SELECT quantity_available FROM Items WHERE item_id = %s;
+
 -- query for adding a new order
 INSERT INTO Orders (cust_id, emp_id, date, total, credit_card_num, exp_date, credit_card_code)
 	VALUES (:cust_idINPUT_FROM_DROPDOWN, :emp_idINPUT_FROM_DROPDOWN, :dateIn, NULL, :credit_card_numIn, :exp_dateIn, :credit_card_codeIn)
@@ -104,6 +107,10 @@ WHERE order_id=:order_idINPUT_FROM_CLICK
 -- queries for editing order items
 -- gets the item_ids from an order
 SELECT item_id FROM Order_Items WHERE Order_Items.order_id = %s;
+-- gets the quantities from an order
+SELECT quantity FROM Order_Items WHERE Order_Items.order_id = %s;
+-- query for getting the quantity_available of an item for checking whether enough items are available for an order
+SELECT quantity_available FROM Items WHERE item_id = %s;
 -- sets quantity_available back to its orginal value for an item
 UPDATE Items SET quantity_available = ((SELECT quantity_available FROM Items WHERE item_id = %s) + (SELECT quantity FROM Order_Items WHERE Order_Items.order_id = %s AND Order_Items.item_id = %s)) WHERE item_id = %s;
 -- deletes original Order_Items

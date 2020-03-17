@@ -138,6 +138,16 @@ def Orders():
                 quantities.append(currentQty)           # get the quantities
             count += 1
 
+        # check the quantity_available of each order item to be added and display error if not enough
+        for item_id, quantity in zip(item_ids, quantities):
+            query5 = "SELECT quantity_available FROM Items WHERE item_id = %s;"
+            data5 = (item_id,)
+            oldQtyAvail = execute_query(db_connection, query5, data5).fetchall();
+            newQtyAvail = oldQtyAvail[0][0] - int(quantity)
+            if newQtyAvail < 0:
+                flash("Cannot complete order due to insufficient availability of an item in your order.")
+                return redirect(url_for('Orders'))
+
         # insert the order 
         query = "INSERT INTO Orders (cust_id, emp_id, date, total, credit_card_num, exp_date, credit_card_code) VALUES (%s, %s, %s, NULL, %s, %s, %s);"
         queryNoCust = "INSERT INTO Orders (cust_id, emp_id, date, total, credit_card_num, exp_date, credit_card_code) VALUES (NULL, %s, %s, NULL, %s, %s, %s);"
@@ -157,10 +167,6 @@ def Orders():
             result = execute_query(db_connection, query, data).fetchall();
         print(result)
         print("Order added.")
-
-        # check the quantity_available of each order item to be added and display error if not enough
-
-
 
         # insert the rows in Order_Items and subtract the order items' quantities from the quantity_available
         query2 = "INSERT INTO Order_Items (order_id, item_id, quantity) VALUES ((SELECT Orders.order_id FROM Orders ORDER BY Orders.order_id DESC LIMIT 1), %s, %s);"
@@ -233,11 +239,37 @@ def editOrder(id):
         while(str(request.form.get('item_id_' + str(count))) != "None"):
             currentId = request.form.get("item_id_" + str(count))
             currentQty = request.form.get("quantity_" + str(count))
-            print("currentQty is equal to ", currentQty, "!!!!!!!!!!")
             if currentId != "" and int(currentQty) > 0:
                 item_ids.append(currentId)          # add item_ids
                 quantities.append(currentQty)       # add quantities
             count += 1
+
+        # get the item_ids and quantities of the original order items
+        query7 = "SELECT item_id FROM Order_Items WHERE Order_Items.order_id = %s;"
+        query8 = "SELECT quantity FROM Order_Items WHERE Order_Items.order_id = %s;"
+        data7 = (id,)
+        old_item_ids = execute_query(db_connection, query7, data7).fetchall();
+        old_quantities = execute_query(db_connection, query8, data7).fetchall();
+
+        # check the quantity_available of each order item to be added and display error if not enough
+        query9 = "SELECT quantity_available FROM Items WHERE item_id = %s;"
+        for item_id, quantity in zip(item_ids, quantities):
+            if (int(item_id),) in old_item_ids:
+                for old_item_id, old_quantity in zip(old_item_ids, old_quantities):
+                    if (int(item_id),) == old_item_id:
+                        data9 = (item_id,)
+                        oldQtyAvail = execute_query(db_connection, query9, data9).fetchall();
+                        newQtyAvail = oldQtyAvail[0][0] + old_quantity[0] - int(quantity)
+                        if newQtyAvail < 0:
+                            flash("Cannot complete order due to insufficient availability of an item in your order.")
+                            return redirect(url_for('editOrder', id=id))
+            else:
+                data9 = (item_id,)
+                oldQtyAvail = execute_query(db_connection, query9, data9).fetchall();
+                newQtyAvail = oldQtyAvail[0][0] - int(quantity)
+                if newQtyAvail < 0:
+                    flash("Cannot complete order due to insufficient availability of an item in your order.")
+                    return redirect(url_for('editOrder', id=id))
 
         # update the order 
         query = "UPDATE Orders SET cust_id = %s, emp_id = %s, date = %s, total = NULL, credit_card_num = %s, exp_date = %s, credit_card_code = %s WHERE Orders.order_id = %s;"
@@ -259,14 +291,7 @@ def editOrder(id):
         print(result)
         print("Order added.")
 
-        # check the quantity_available of each order item to be added and display error if not enough
-
-
         # add the quantities back to quantity_available for the original Order_Items
-        query7 = "SELECT item_id FROM Order_Items WHERE Order_Items.order_id = %s;"
-        data7 = (id,)
-        old_item_ids = execute_query(db_connection, query7, data7).fetchall();
-        print("old_item_ids is equal to this: ", old_item_ids)
         for old_item_id in old_item_ids:
             query6 = "UPDATE Items SET quantity_available = ((SELECT quantity_available FROM Items WHERE item_id = %s) + (SELECT quantity FROM Order_Items WHERE Order_Items.order_id = %s AND Order_Items.item_id = %s)) WHERE item_id = %s;"
             data6 = (old_item_id, id, old_item_id, old_item_id)

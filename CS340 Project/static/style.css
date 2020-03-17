@@ -39,6 +39,7 @@ div.items {
     -webkit-border-radius: 6px;
     -moz-border-radius: 6px;
     border-radius: 6px;
+    margin-bottom: 5px;
 }
 
 div.orders {
@@ -48,6 +49,17 @@ div.orders {
     -webkit-border-radius: 6px;
     -moz-border-radius: 6px;
     border-radius: 6px;
+    margin-bottom: 5px;
+}
+
+div.orderItems {
+    padding: 20px 0 20px 0;
+    text-align: center;
+    background-color: #fffdc7;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+    margin-bottom: 10px;
 }
 
 div.customers {
@@ -57,6 +69,7 @@ div.customers {
     -webkit-border-radius: 6px;
     -moz-border-radius: 6px;
     border-radius: 6px;
+    margin-bottom: 5px;
 }
 
 div.employees {
@@ -66,6 +79,7 @@ div.employees {
     -webkit-border-radius: 6px;
     -moz-border-radius: 6px;
     border-radius: 6px;
+    margin-bottom: 5px;
 }
 
 tr .rowBtn {

@@ -97,7 +97,7 @@ $(document).ready(function() {
             <td>{{r[5]}}</td>
             <td>{{r[6]}}</td>
             <td>{{r[7]}}</td>
-            <td class="rowBtn"><button class="btn btn-primary" type="submit" onclick="window.location='/Orders/edit/{{r.0}}/items'">Items</button></td>
+            <td class="rowBtn"><button class="btn btn-secondary" id="items-button" type="submit" onclick="window.location='/Orders/edit/{{r.0}}/items'">Items</button></td>
             <td class="rowBtn"><button class="btn btn-primary" type="submit" onclick="window.location='/Orders/edit/{{r.0}}'">Edit</button></td>
             <td><button class="rowBtn, btn btn-danger" type="submit" onclick="window.location='/deleteOrder/{{r.0}}'">Delete</button></td>
         </tr>
@@ -106,6 +106,7 @@ $(document).ready(function() {
     </tbody>
 
 </table>
+<br>
 
 <script>
     var count = 1;
